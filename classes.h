@@ -5,6 +5,16 @@
 using namespace System;
 using namespace std;
 
+ref class Currency {
+protected: int amount = 0; // what the user has to play with
+public:
+	int getAmount() {
+		return amount;
+	}
+	void changeAmount(int value) { // will be added to amount, so use negative values to subtract
+		amount = amount + value;
+	}
+};
 public class Drum {
 public:
 	Drum() {

@@ -14,7 +14,9 @@ namespace SuperSlotMachine {
 	/// </summary>
 	public enum class drum { d1, d2, d3 };
 	public ref class frmMain : public System::Windows::Forms::Form
+
 	{
+		Currency^ playing_money;
 	public:
 		frmMain(void)
 		{
@@ -22,7 +24,10 @@ namespace SuperSlotMachine {
 			//
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
+			playing_money = gcnew Currency;
+			playing_money->changeAmount(10025);// the 25 is b/c load does a click on btnSpin to init display
 		}
+
 	private: System::Windows::Forms::GroupBox^ gbMainFrame;
 	public:
 
@@ -51,6 +56,8 @@ namespace SuperSlotMachine {
 	private: System::Windows::Forms::Button^ btnRespin2;
 
 	private: System::Windows::Forms::Button^ btnRespin1;
+	private: System::Windows::Forms::PictureBox^ picSlotMachine;
+	private: System::Windows::Forms::TextBox^ txtCurrency;
 
 		   technolibCLR::TechnoClass^ tl = gcnew technolibCLR::TechnoClass;
 	protected:
@@ -92,6 +99,7 @@ namespace SuperSlotMachine {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(frmMain::typeid));
 			this->statusStrip1 = (gcnew System::Windows::Forms::StatusStrip());
 			this->toolStripStatusLabel1 = (gcnew System::Windows::Forms::ToolStripStatusLabel());
 			this->toolStripProgressBar1 = (gcnew System::Windows::Forms::ToolStripProgressBar());
@@ -118,11 +126,14 @@ namespace SuperSlotMachine {
 			this->lblDate = (gcnew System::Windows::Forms::Label());
 			this->lblTime = (gcnew System::Windows::Forms::Label());
 			this->errorProviderMain = (gcnew System::Windows::Forms::ErrorProvider(this->components));
+			this->picSlotMachine = (gcnew System::Windows::Forms::PictureBox());
+			this->txtCurrency = (gcnew System::Windows::Forms::TextBox());
 			this->statusStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->perfcCPU))->BeginInit();
 			this->gbMainFrame->SuspendLayout();
 			this->gbWin->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProviderMain))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picSlotMachine))->BeginInit();
 			this->SuspendLayout();
 			//
 			// statusStrip1
@@ -422,16 +433,43 @@ namespace SuperSlotMachine {
 			//
 			this->errorProviderMain->ContainerControl = this;
 			//
+			// picSlotMachine
+			//
+			this->picSlotMachine->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"picSlotMachine.Image")));
+			this->picSlotMachine->Location = System::Drawing::Point(214, 12);
+			this->picSlotMachine->Name = L"picSlotMachine";
+			this->picSlotMachine->Size = System::Drawing::Size(170, 165);
+			this->picSlotMachine->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
+			this->picSlotMachine->TabIndex = 6;
+			this->picSlotMachine->TabStop = false;
+			//
+			// txtCurrency
+			//
+			this->txtCurrency->Font = (gcnew System::Drawing::Font(L"Courier New", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->txtCurrency->Location = System::Drawing::Point(215, 195);
+			this->txtCurrency->Name = L"txtCurrency";
+			this->txtCurrency->ReadOnly = true;
+			this->txtCurrency->Size = System::Drawing::Size(168, 31);
+			this->txtCurrency->TabIndex = 7;
+			this->txtCurrency->TabStop = false;
+			this->txtCurrency->Text = L"1000";
+			this->txtCurrency->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->txtCurrency->WordWrap = false;
+			//
 			// frmMain
 			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1004, 625);
+			this->Controls->Add(this->txtCurrency);
+			this->Controls->Add(this->picSlotMachine);
 			this->Controls->Add(this->lblTime);
 			this->Controls->Add(this->lblDate);
 			this->Controls->Add(this->gbMainFrame);
 			this->Controls->Add(this->statusStrip1);
 			this->DoubleBuffered = true;
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"frmMain";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
@@ -443,6 +481,7 @@ namespace SuperSlotMachine {
 			this->gbMainFrame->ResumeLayout(false);
 			this->gbWin->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProviderMain))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picSlotMachine))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 		}
@@ -479,7 +518,9 @@ namespace SuperSlotMachine {
 		default:
 			break;
 		}
+		playing_money->changeAmount(-100);
 		CheckForWin();
+		ReDraw();
 	} // ReSpin
 	private:   void SpinIt() {
 		Drum one;
@@ -505,6 +546,9 @@ namespace SuperSlotMachine {
 		lbl31->Text = ((wchar_t)v1[2]).ToString();
 		lbl32->Text = ((wchar_t)v2[2]).ToString();
 		lbl33->Text = ((wchar_t)v3[2]).ToString();
+
+		playing_money->changeAmount(-25);
+		ReDraw();
 	}
 	private: System::Void frmMain_Load(System::Object^ sender, System::EventArgs^ e) {
 		lblDate->Text = tl->currentDECDate();
@@ -512,27 +556,36 @@ namespace SuperSlotMachine {
 		SpinIt();
 	}
 	private: Void CheckForWin() {
+		int winnings = 0;
 		if (lbl21->Text == lbl22->Text && (lbl21->Text == lbl23->Text)) {
+			winnings = 1000;
 			MessageBox::Show("You win in the middle row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 		else {
 			if (lbl11->Text == lbl22->Text && (lbl11->Text == lbl33->Text)) {
+				winnings = 1000;
 				MessageBox::Show("You win in a backslash!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 			}
 		}
 
 		if (lbl13->Text == lbl22->Text && (lbl13->Text == lbl31->Text)) {
+			winnings = 1000;
 			MessageBox::Show("You win in a slash!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 		if (lbl11->Text == lbl12->Text && (lbl21->Text == lbl23->Text)) {
+			winnings = 1000;
 			MessageBox::Show("You win in the top row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 		if (lbl31->Text == lbl32->Text && (lbl31->Text == lbl33->Text)) {
+			winnings = 1000;
 			MessageBox::Show("You win in the bottom row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 		if (lbl21->Text == "1" && lbl22->Text == "2" && lbl23->Text == "3") {
+			winnings = 100000;
 			MessageBox::Show("One-Two-Three! You win the JACKPOT!", "JACKPOT", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 		}
+		playing_money->changeAmount(winnings);
+		ReDraw();
 	}
 	private: System::Void btnSpin_Click(System::Object^ sender, System::EventArgs^ e) {
 		SpinIt();
@@ -552,5 +605,9 @@ namespace SuperSlotMachine {
 	private: System::Void btnRespin3_Click(System::Object^ sender, System::EventArgs^ e) {
 		RespinIt(drum::d3);
 	}
-	};//btnSpin_Click
+
+	private: void ReDraw() {
+		txtCurrency->Text = playing_money->getAmount().ToString();
+	}
+	};
 }
