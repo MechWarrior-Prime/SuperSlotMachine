@@ -3,8 +3,9 @@
 /*
 	Super Slot Machine for CLR
 	Frank G. Dahncke
-	Build 0002
+	Build 0003
 	21-FEB-2020	1.0		creation
+	25-FEB-2020	1.1		images
 */
 using namespace System;
 using namespace System::Windows::Forms;
