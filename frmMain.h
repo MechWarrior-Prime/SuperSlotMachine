@@ -12,6 +12,7 @@ namespace SuperSlotMachine {
 	/// <summary>
 	/// Zusammenfassung für frmMain
 	/// </summary>
+	public enum class drum { d1, d2, d3 };
 	public ref class frmMain : public System::Windows::Forms::Form
 	{
 	public:
@@ -43,6 +44,13 @@ namespace SuperSlotMachine {
 	private: System::Windows::Forms::Label^ lbl23;
 	private: System::Windows::Forms::Label^ lbl22;
 	private: System::Windows::Forms::Label^ lbl21;
+	private: System::Windows::Forms::Label^ lblTime;
+	private: System::Windows::Forms::Label^ lblDate;
+	private: System::Windows::Forms::Button^ btnRespin3;
+
+	private: System::Windows::Forms::Button^ btnRespin2;
+
+	private: System::Windows::Forms::Button^ btnRespin1;
 
 		   technolibCLR::TechnoClass^ tl = gcnew technolibCLR::TechnoClass;
 	protected:
@@ -93,6 +101,9 @@ namespace SuperSlotMachine {
 			this->tmrPerfCounter = (gcnew System::Windows::Forms::Timer(this->components));
 			this->toolTipMain = (gcnew System::Windows::Forms::ToolTip(this->components));
 			this->gbMainFrame = (gcnew System::Windows::Forms::GroupBox());
+			this->btnRespin3 = (gcnew System::Windows::Forms::Button());
+			this->btnRespin2 = (gcnew System::Windows::Forms::Button());
+			this->btnRespin1 = (gcnew System::Windows::Forms::Button());
 			this->gbWin = (gcnew System::Windows::Forms::GroupBox());
 			this->lbl23 = (gcnew System::Windows::Forms::Label());
 			this->lbl22 = (gcnew System::Windows::Forms::Label());
@@ -104,6 +115,8 @@ namespace SuperSlotMachine {
 			this->lbl12 = (gcnew System::Windows::Forms::Label());
 			this->lbl11 = (gcnew System::Windows::Forms::Label());
 			this->btnSpin = (gcnew System::Windows::Forms::Button());
+			this->lblDate = (gcnew System::Windows::Forms::Label());
+			this->lblTime = (gcnew System::Windows::Forms::Label());
 			this->errorProviderMain = (gcnew System::Windows::Forms::ErrorProvider(this->components));
 			this->statusStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->perfcCPU))->BeginInit();
@@ -111,9 +124,9 @@ namespace SuperSlotMachine {
 			this->gbWin->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProviderMain))->BeginInit();
 			this->SuspendLayout();
-			// 
+			//
 			// statusStrip1
-			// 
+			//
 			this->statusStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
 				this->toolStripStatusLabel1,
 					this->toolStripProgressBar1, this->tsslPercent, this->toolStripStatusLabel2
@@ -125,61 +138,65 @@ namespace SuperSlotMachine {
 			this->statusStrip1->SizingGrip = false;
 			this->statusStrip1->TabIndex = 1;
 			this->statusStrip1->Text = L"Status";
-			// 
+			//
 			// toolStripStatusLabel1
-			// 
+			//
 			this->toolStripStatusLabel1->Name = L"toolStripStatusLabel1";
 			this->toolStripStatusLabel1->Size = System::Drawing::Size(425, 17);
 			this->toolStripStatusLabel1->Spring = true;
 			this->toolStripStatusLabel1->Text = L"Total CPU Usage in %: ";
 			this->toolStripStatusLabel1->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
-			// 
+			//
 			// toolStripProgressBar1
-			// 
+			//
 			this->toolStripProgressBar1->AutoToolTip = true;
 			this->toolStripProgressBar1->Name = L"toolStripProgressBar1";
 			this->toolStripProgressBar1->Size = System::Drawing::Size(100, 16);
 			this->toolStripProgressBar1->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
 			this->toolStripProgressBar1->ToolTipText = L"Current usage of total processing power";
-			// 
+			//
 			// tsslPercent
-			// 
+			//
 			this->tsslPercent->AutoSize = false;
 			this->tsslPercent->Margin = System::Windows::Forms::Padding(-1, 3, 0, 2);
 			this->tsslPercent->Name = L"tsslPercent";
 			this->tsslPercent->Size = System::Drawing::Size(38, 17);
 			this->tsslPercent->Text = L"0% ";
-			// 
+			//
 			// toolStripStatusLabel2
-			// 
+			//
 			this->toolStripStatusLabel2->Name = L"toolStripStatusLabel2";
 			this->toolStripStatusLabel2->Size = System::Drawing::Size(425, 17);
 			this->toolStripStatusLabel2->Spring = true;
 			this->toolStripStatusLabel2->Text = L"©2020 Frank G. Dahncke";
 			this->toolStripStatusLabel2->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
-			// 
+			//
 			// perfcCPU
-			// 
+			//
 			this->perfcCPU->CategoryName = L"Processor";
 			this->perfcCPU->CounterName = L"% Processor Time";
 			this->perfcCPU->InstanceName = L"_Total";
-			// 
+			//
 			// tmrPerfCounter
-			// 
+			//
 			this->tmrPerfCounter->Enabled = true;
 			this->tmrPerfCounter->Interval = 1000;
 			this->tmrPerfCounter->Tick += gcnew System::EventHandler(this, &frmMain::tmrPerfCounter_Tick);
-			// 
+			//
 			// toolTipMain
-			// 
+			//
 			this->toolTipMain->AutoPopDelay = 5000;
 			this->toolTipMain->InitialDelay = 800;
 			this->toolTipMain->IsBalloon = true;
 			this->toolTipMain->ReshowDelay = 100;
-			this->toolTipMain->ToolTipTitle = L"Calculator CLR";
-			// 
+			this->toolTipMain->ToolTipIcon = System::Windows::Forms::ToolTipIcon::Info;
+			this->toolTipMain->ToolTipTitle = L"Super Slot Machine";
+			//
 			// gbMainFrame
-			// 
+			//
+			this->gbMainFrame->Controls->Add(this->btnRespin3);
+			this->gbMainFrame->Controls->Add(this->btnRespin2);
+			this->gbMainFrame->Controls->Add(this->btnRespin1);
 			this->gbMainFrame->Controls->Add(this->gbWin);
 			this->gbMainFrame->Controls->Add(this->lbl33);
 			this->gbMainFrame->Controls->Add(this->lbl32);
@@ -190,14 +207,50 @@ namespace SuperSlotMachine {
 			this->gbMainFrame->Controls->Add(this->btnSpin);
 			this->gbMainFrame->Location = System::Drawing::Point(12, 12);
 			this->gbMainFrame->Name = L"gbMainFrame";
-			this->gbMainFrame->Size = System::Drawing::Size(187, 219);
+			this->gbMainFrame->Size = System::Drawing::Size(187, 255);
 			this->gbMainFrame->TabIndex = 3;
 			this->gbMainFrame->TabStop = false;
 			this->gbMainFrame->Text = L"The Super Slot Machine";
 			this->toolTipMain->SetToolTip(this->gbMainFrame, L"This is the one-armed bandit");
-			// 
+			//
+			// btnRespin3
+			//
+			this->btnRespin3->Location = System::Drawing::Point(131, 165);
+			this->btnRespin3->Name = L"btnRespin3";
+			this->btnRespin3->Size = System::Drawing::Size(28, 27);
+			this->btnRespin3->TabIndex = 15;
+			this->btnRespin3->Text = L"^";
+			this->toolTipMain->SetToolTip(this->btnRespin3, L"Re-spin drum 3. Costs 100.");
+			this->btnRespin3->UseMnemonic = false;
+			this->btnRespin3->UseVisualStyleBackColor = true;
+			this->btnRespin3->Click += gcnew System::EventHandler(this, &frmMain::btnRespin3_Click);
+			//
+			// btnRespin2
+			//
+			this->btnRespin2->Location = System::Drawing::Point(77, 165);
+			this->btnRespin2->Name = L"btnRespin2";
+			this->btnRespin2->Size = System::Drawing::Size(28, 27);
+			this->btnRespin2->TabIndex = 14;
+			this->btnRespin2->Text = L"^";
+			this->toolTipMain->SetToolTip(this->btnRespin2, L"Re-spin drum 2. Costs 100.");
+			this->btnRespin2->UseMnemonic = false;
+			this->btnRespin2->UseVisualStyleBackColor = true;
+			this->btnRespin2->Click += gcnew System::EventHandler(this, &frmMain::btnRespin2_Click);
+			//
+			// btnRespin1
+			//
+			this->btnRespin1->Location = System::Drawing::Point(23, 165);
+			this->btnRespin1->Name = L"btnRespin1";
+			this->btnRespin1->Size = System::Drawing::Size(28, 27);
+			this->btnRespin1->TabIndex = 13;
+			this->btnRespin1->Text = L"^";
+			this->toolTipMain->SetToolTip(this->btnRespin1, L"Re-spin drum 1. Costs 100.");
+			this->btnRespin1->UseMnemonic = false;
+			this->btnRespin1->UseVisualStyleBackColor = true;
+			this->btnRespin1->Click += gcnew System::EventHandler(this, &frmMain::btnRespin1_Click);
+			//
 			// gbWin
-			// 
+			//
 			this->gbWin->Controls->Add(this->lbl23);
 			this->gbWin->Controls->Add(this->lbl22);
 			this->gbWin->Controls->Add(this->lbl21);
@@ -208,9 +261,9 @@ namespace SuperSlotMachine {
 			this->gbWin->TabIndex = 12;
 			this->gbWin->TabStop = false;
 			this->toolTipMain->SetToolTip(this->gbWin, L"The winning row");
-			// 
+			//
 			// lbl23
-			// 
+			//
 			this->lbl23->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lbl23->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -221,9 +274,9 @@ namespace SuperSlotMachine {
 			this->lbl23->Text = L"*";
 			this->lbl23->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl23->UseMnemonic = false;
-			// 
+			//
 			// lbl22
-			// 
+			//
 			this->lbl22->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lbl22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -234,9 +287,9 @@ namespace SuperSlotMachine {
 			this->lbl22->Text = L"*";
 			this->lbl22->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl22->UseMnemonic = false;
-			// 
+			//
 			// lbl21
-			// 
+			//
 			this->lbl21->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lbl21->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -247,9 +300,9 @@ namespace SuperSlotMachine {
 			this->lbl21->Text = L"*";
 			this->lbl21->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl21->UseMnemonic = false;
-			// 
+			//
 			// lbl33
-			// 
+			//
 			this->lbl33->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lbl33->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -260,9 +313,9 @@ namespace SuperSlotMachine {
 			this->lbl33->Text = L"*";
 			this->lbl33->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl33->UseMnemonic = false;
-			// 
+			//
 			// lbl32
-			// 
+			//
 			this->lbl32->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lbl32->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -273,9 +326,9 @@ namespace SuperSlotMachine {
 			this->lbl32->Text = L"*";
 			this->lbl32->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl32->UseMnemonic = false;
-			// 
+			//
 			// lbl31
-			// 
+			//
 			this->lbl31->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lbl31->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -286,9 +339,9 @@ namespace SuperSlotMachine {
 			this->lbl31->Text = L"*";
 			this->lbl31->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl31->UseMnemonic = false;
-			// 
+			//
 			// lbl13
-			// 
+			//
 			this->lbl13->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lbl13->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -299,9 +352,9 @@ namespace SuperSlotMachine {
 			this->lbl13->Text = L"*";
 			this->lbl13->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl13->UseMnemonic = false;
-			// 
+			//
 			// lbl12
-			// 
+			//
 			this->lbl12->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lbl12->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -312,9 +365,9 @@ namespace SuperSlotMachine {
 			this->lbl12->Text = L"*";
 			this->lbl12->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl12->UseMnemonic = false;
-			// 
+			//
 			// lbl11
-			// 
+			//
 			this->lbl11->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lbl11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -325,28 +378,57 @@ namespace SuperSlotMachine {
 			this->lbl11->Text = L"*";
 			this->lbl11->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl11->UseMnemonic = false;
-			// 
+			//
 			// btnSpin
-			// 
-			this->btnSpin->Location = System::Drawing::Point(19, 174);
+			//
+			this->btnSpin->Location = System::Drawing::Point(19, 210);
 			this->btnSpin->Name = L"btnSpin";
 			this->btnSpin->Size = System::Drawing::Size(141, 21);
 			this->btnSpin->TabIndex = 3;
 			this->btnSpin->Text = L"SPIN";
-			this->toolTipMain->SetToolTip(this->btnSpin, L"Try your luck!");
+			this->toolTipMain->SetToolTip(this->btnSpin, L"Try your luck! Costs 25.");
 			this->btnSpin->UseMnemonic = false;
 			this->btnSpin->UseVisualStyleBackColor = true;
 			this->btnSpin->Click += gcnew System::EventHandler(this, &frmMain::btnSpin_Click);
-			// 
+			//
+			// lblDate
+			//
+			this->lblDate->AutoSize = true;
+			this->lblDate->FlatStyle = System::Windows::Forms::FlatStyle::System;
+			this->lblDate->Font = (gcnew System::Drawing::Font(L"Consolas", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblDate->Location = System::Drawing::Point(850, 9);
+			this->lblDate->Name = L"lblDate";
+			this->lblDate->Size = System::Drawing::Size(142, 24);
+			this->lblDate->TabIndex = 4;
+			this->lblDate->Text = L"25-FEB-2020";
+			this->lblDate->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->toolTipMain->SetToolTip(this->lblDate, L"Date");
+			//
+			// lblTime
+			//
+			this->lblTime->FlatStyle = System::Windows::Forms::FlatStyle::System;
+			this->lblTime->Font = (gcnew System::Drawing::Font(L"Consolas", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lblTime->Location = System::Drawing::Point(850, 33);
+			this->lblTime->Name = L"lblTime";
+			this->lblTime->Size = System::Drawing::Size(142, 24);
+			this->lblTime->TabIndex = 5;
+			this->lblTime->Text = L"00:00:00";
+			this->lblTime->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+			this->toolTipMain->SetToolTip(this->lblTime, L"Timr");
+			//
 			// errorProviderMain
-			// 
+			//
 			this->errorProviderMain->ContainerControl = this;
-			// 
+			//
 			// frmMain
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1004, 625);
+			this->Controls->Add(this->lblTime);
+			this->Controls->Add(this->lblDate);
 			this->Controls->Add(this->gbMainFrame);
 			this->Controls->Add(this->statusStrip1);
 			this->DoubleBuffered = true;
@@ -363,13 +445,42 @@ namespace SuperSlotMachine {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProviderMain))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
 		}
 #pragma endregion
 	private: System::Void tmrPerfCounter_Tick(System::Object^ sender, System::EventArgs^ e) {
 		toolStripProgressBar1->Value = (int)perfcCPU->NextValue();
 		tsslPercent->Text = toolStripProgressBar1->Value.ToString() + "% ";
+		DateTime dt;
+		lblTime->Text = dt.Now.ToLongTimeString();
 	}
+	private: void RespinIt(drum mydrum) {
+		Drum dr;
+		vector<char> vec;
+		switch (mydrum)
+		{
+		case SuperSlotMachine::drum::d1:
+			vec = dr.spin(false);
+			lbl11->Text = ((wchar_t)vec[0]).ToString();
+			lbl21->Text = ((wchar_t)vec[1]).ToString();
+			lbl31->Text = ((wchar_t)vec[2]).ToString();
+			break;
+		case SuperSlotMachine::drum::d2:
+			vec = dr.spin(true);
+			lbl12->Text = ((wchar_t)vec[0]).ToString();
+			lbl22->Text = ((wchar_t)vec[1]).ToString();
+			lbl32->Text = ((wchar_t)vec[2]).ToString();
+			break;
+		case SuperSlotMachine::drum::d3:
+			vec = dr.spin(false);
+			lbl13->Text = ((wchar_t)vec[0]).ToString();
+			lbl23->Text = ((wchar_t)vec[1]).ToString();
+			lbl33->Text = ((wchar_t)vec[2]).ToString();
+			break;
+		default:
+			break;
+		}
+		CheckForWin();
+	} // ReSpin
 	private:   void SpinIt() {
 		Drum one;
 		Drum two;
@@ -396,17 +507,11 @@ namespace SuperSlotMachine {
 		lbl33->Text = ((wchar_t)v3[2]).ToString();
 	}
 	private: System::Void frmMain_Load(System::Object^ sender, System::EventArgs^ e) {
+		lblDate->Text = tl->currentDECDate();
 		tl->InitRNG(); //set up the Random Number Generator
 		SpinIt();
 	}
-	private: System::Void btnSpin_Click(System::Object^ sender, System::EventArgs^ e) {
-		SpinIt();
-		/* KEEP for debugging
-		lbl23->Text = ((wchar_t)'A').ToString();
-		lbl22->Text = ((wchar_t)'A').ToString();
-		lbl21->Text = ((wchar_t)'A').ToString();
-		*/
-
+	private: Void CheckForWin() {
 		if (lbl21->Text == lbl22->Text && (lbl21->Text == lbl23->Text)) {
 			MessageBox::Show("You win in the middle row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
@@ -428,6 +533,24 @@ namespace SuperSlotMachine {
 		if (lbl21->Text == "1" && lbl22->Text == "2" && lbl23->Text == "3") {
 			MessageBox::Show("One-Two-Three! You win the JACKPOT!", "JACKPOT", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 		}
+	}
+	private: System::Void btnSpin_Click(System::Object^ sender, System::EventArgs^ e) {
+		SpinIt();
+		/* KEEP for debugging
+		lbl23->Text = ((wchar_t)'A').ToString();
+		lbl22->Text = ((wchar_t)'A').ToString();
+		lbl21->Text = ((wchar_t)'A').ToString();
+		*/
+		CheckForWin();
+	}
+	private: System::Void btnRespin1_Click(System::Object^ sender, System::EventArgs^ e) {
+		RespinIt(drum::d1);
+	}
+	private: System::Void btnRespin2_Click(System::Object^ sender, System::EventArgs^ e) {
+		RespinIt(drum::d2);
+	}
+	private: System::Void btnRespin3_Click(System::Object^ sender, System::EventArgs^ e) {
+		RespinIt(drum::d3);
 	}
 	};//btnSpin_Click
 }

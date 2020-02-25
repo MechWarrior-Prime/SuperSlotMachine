@@ -3,7 +3,7 @@
 /*
 	Super Slot Machine for CLR
 	Frank G. Dahncke
-	Build 0001
+	Build 0002
 	21-FEB-2020	1.0		creation
 */
 using namespace System;
