@@ -4,6 +4,7 @@
 
 using namespace System;
 using namespace std;
+using namespace System::Text;
 
 ref class Currency {
 protected: int amount = 0; // what the user has to play with
@@ -13,6 +14,37 @@ public:
 	}
 	void changeAmount(int value) { // will be added to amount, so use negative values to subtract
 		amount = amount + value;
+	}
+};
+public class CryptIt {
+public:
+	String^ Encrypt(String^ cleartext) {
+		unsigned max = cleartext->Length;
+		unsigned short code = 0;
+
+		StringBuilder^ sb = gcnew StringBuilder(cleartext);
+
+		for (unsigned i = 0; i < max; i++) {
+			code = cleartext[i];// intrinsic conversion DOES have it's value,after all
+			code += (10 + i);
+			sb[i] = char(code);
+		};
+		cleartext = sb->ToString();
+		return cleartext;
+	}
+	String^ Decrypt(String^ cryptotext) {
+		unsigned max = cryptotext->Length;
+		unsigned short code = 0;
+
+		StringBuilder^ sb = gcnew StringBuilder(cryptotext);
+
+		for (unsigned i = 0; i < max; i++) {
+			code = cryptotext[i];// intrinsic conversion DOES have it's value,after all
+			code -= (10 + i);
+			sb[i] = char(code);
+		};
+		cryptotext = sb->ToString();
+		return cryptotext;
 	}
 };
 public class Drum {

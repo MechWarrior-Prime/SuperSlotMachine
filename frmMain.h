@@ -59,6 +59,9 @@ namespace SuperSlotMachine {
 	private: System::Windows::Forms::TextBox^ txtCurrency;
 	private: System::Windows::Forms::ImageList^ ilFruit;
 	private: System::Windows::Forms::Label^ lbl11;
+	private: System::Windows::Forms::Button^ btnCalc;
+	private: System::Windows::Forms::Button^ btnCashIn;
+	private: System::Windows::Forms::Button^ btnUseCode;
 
 		   technolibCLR::TechnoClass^ tl = gcnew technolibCLR::TechnoClass;
 	protected:
@@ -127,9 +130,12 @@ namespace SuperSlotMachine {
 			this->btnSpin = (gcnew System::Windows::Forms::Button());
 			this->lblDate = (gcnew System::Windows::Forms::Label());
 			this->lblTime = (gcnew System::Windows::Forms::Label());
+			this->btnCalc = (gcnew System::Windows::Forms::Button());
 			this->errorProviderMain = (gcnew System::Windows::Forms::ErrorProvider(this->components));
 			this->picSlotMachine = (gcnew System::Windows::Forms::PictureBox());
 			this->txtCurrency = (gcnew System::Windows::Forms::TextBox());
+			this->btnCashIn = (gcnew System::Windows::Forms::Button());
+			this->btnUseCode = (gcnew System::Windows::Forms::Button());
 			this->statusStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->perfcCPU))->BeginInit();
 			this->gbMainFrame->SuspendLayout();
@@ -144,10 +150,10 @@ namespace SuperSlotMachine {
 				this->toolStripStatusLabel1,
 					this->toolStripProgressBar1, this->tsslPercent, this->toolStripStatusLabel2
 			});
-			this->statusStrip1->Location = System::Drawing::Point(0, 603);
+			this->statusStrip1->Location = System::Drawing::Point(0, 326);
 			this->statusStrip1->Name = L"statusStrip1";
 			this->statusStrip1->ShowItemToolTips = true;
-			this->statusStrip1->Size = System::Drawing::Size(1004, 22);
+			this->statusStrip1->Size = System::Drawing::Size(571, 22);
 			this->statusStrip1->SizingGrip = false;
 			this->statusStrip1->TabIndex = 1;
 			this->statusStrip1->Text = L"Status";
@@ -155,7 +161,7 @@ namespace SuperSlotMachine {
 			// toolStripStatusLabel1
 			//
 			this->toolStripStatusLabel1->Name = L"toolStripStatusLabel1";
-			this->toolStripStatusLabel1->Size = System::Drawing::Size(425, 17);
+			this->toolStripStatusLabel1->Size = System::Drawing::Size(208, 17);
 			this->toolStripStatusLabel1->Spring = true;
 			this->toolStripStatusLabel1->Text = L"Total CPU Usage in %: ";
 			this->toolStripStatusLabel1->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
@@ -179,7 +185,7 @@ namespace SuperSlotMachine {
 			// toolStripStatusLabel2
 			//
 			this->toolStripStatusLabel2->Name = L"toolStripStatusLabel2";
-			this->toolStripStatusLabel2->Size = System::Drawing::Size(425, 17);
+			this->toolStripStatusLabel2->Size = System::Drawing::Size(208, 17);
 			this->toolStripStatusLabel2->Spring = true;
 			this->toolStripStatusLabel2->Text = L"©2020 Frank G. Dahncke";
 			this->toolStripStatusLabel2->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
@@ -433,7 +439,7 @@ namespace SuperSlotMachine {
 			this->lblDate->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lblDate->Font = (gcnew System::Drawing::Font(L"Consolas", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblDate->Location = System::Drawing::Point(850, 9);
+			this->lblDate->Location = System::Drawing::Point(412, 13);
 			this->lblDate->Name = L"lblDate";
 			this->lblDate->Size = System::Drawing::Size(142, 24);
 			this->lblDate->TabIndex = 4;
@@ -446,13 +452,24 @@ namespace SuperSlotMachine {
 			this->lblTime->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lblTime->Font = (gcnew System::Drawing::Font(L"Consolas", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->lblTime->Location = System::Drawing::Point(850, 33);
+			this->lblTime->Location = System::Drawing::Point(412, 37);
 			this->lblTime->Name = L"lblTime";
 			this->lblTime->Size = System::Drawing::Size(142, 24);
 			this->lblTime->TabIndex = 5;
 			this->lblTime->Text = L"00:00:00";
 			this->lblTime->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->toolTipMain->SetToolTip(this->lblTime, L"Timr");
+			//
+			// btnCalc
+			//
+			this->btnCalc->Location = System::Drawing::Point(412, 75);
+			this->btnCalc->Name = L"btnCalc";
+			this->btnCalc->Size = System::Drawing::Size(141, 36);
+			this->btnCalc->TabIndex = 8;
+			this->btnCalc->Text = L"&Calculator";
+			this->toolTipMain->SetToolTip(this->btnCalc, L"Useful mathematical functions for winning");
+			this->btnCalc->UseVisualStyleBackColor = true;
+			this->btnCalc->Click += gcnew System::EventHandler(this, &frmMain::btnCalc_Click);
 			//
 			// errorProviderMain
 			//
@@ -472,7 +489,7 @@ namespace SuperSlotMachine {
 			//
 			this->txtCurrency->Font = (gcnew System::Drawing::Font(L"Courier New", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->txtCurrency->Location = System::Drawing::Point(215, 195);
+			this->txtCurrency->Location = System::Drawing::Point(215, 186);
 			this->txtCurrency->Name = L"txtCurrency";
 			this->txtCurrency->ReadOnly = true;
 			this->txtCurrency->Size = System::Drawing::Size(168, 31);
@@ -482,11 +499,36 @@ namespace SuperSlotMachine {
 			this->txtCurrency->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->txtCurrency->WordWrap = false;
 			//
+			// btnCashIn
+			//
+			this->btnCashIn->Location = System::Drawing::Point(219, 235);
+			this->btnCashIn->Name = L"btnCashIn";
+			this->btnCashIn->Size = System::Drawing::Size(164, 28);
+			this->btnCashIn->TabIndex = 9;
+			this->btnCashIn->Text = L"Cash &In";
+			this->toolTipMain->SetToolTip(this->btnCashIn, L"Get a code for you money so you can play on later.");
+			this->btnCashIn->UseVisualStyleBackColor = true;
+			this->btnCashIn->Click += gcnew System::EventHandler(this, &frmMain::btnCashIn_Click);
+			//
+			// btnUseCode
+			//
+			this->btnUseCode->Location = System::Drawing::Point(220, 276);
+			this->btnUseCode->Name = L"btnUseCode";
+			this->btnUseCode->Size = System::Drawing::Size(164, 28);
+			this->btnUseCode->TabIndex = 10;
+			this->btnUseCode->Text = L"&Redeem code";
+			this->toolTipMain->SetToolTip(this->btnUseCode, L"Redeem a code you were given.");
+			this->btnUseCode->UseVisualStyleBackColor = true;
+			this->btnUseCode->Click += gcnew System::EventHandler(this, &frmMain::btnUseCode_Click);
+			//
 			// frmMain
 			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1004, 625);
+			this->ClientSize = System::Drawing::Size(571, 348);
+			this->Controls->Add(this->btnUseCode);
+			this->Controls->Add(this->btnCashIn);
+			this->Controls->Add(this->btnCalc);
 			this->Controls->Add(this->txtCurrency);
 			this->Controls->Add(this->picSlotMachine);
 			this->Controls->Add(this->lblTime);
@@ -689,5 +731,45 @@ namespace SuperSlotMachine {
 	private: void ReDraw() {
 		txtCurrency->Text = playing_money->getAmount().ToString();
 	}
+	private: System::Void btnCalc_Click(System::Object^ sender, System::EventArgs^ e) {
+		try
+		{
+			System::Diagnostics::Process^ CalcProc = gcnew System::Diagnostics::Process;
+			String^ dir = System::IO::Path::GetDirectoryName(Application::ExecutablePath);
+			//MessageBox::Show(System::String::Concat(dir, "\\CalculatorCLR.exe"));
+			CalcProc->StartInfo->FileName = System::String::Concat(dir, "\\CalculatorCLR.exe");
+			CalcProc->StartInfo->WindowStyle = System::Diagnostics::ProcessWindowStyle::Normal;
+			CalcProc->Start();
+		}
+		catch (Exception ^ ex)
+		{
+			MessageBox::Show(ex->Message, "Calculator start failed");
+		}
+	}
+	private: System::Void btnCashIn_Click(System::Object^ sender, System::EventArgs^ e) {
+		CryptIt ci;
+		String^ lsCode = ci.Encrypt(txtCurrency->Text);
+		MessageBox::Show("Your cash code is\n\n" + lsCode + "\n\nIt has also been copied into the clipboard.", "Cash Retrieval");
+		//MessageBox::Show(ci.Decrypt(lsCode), "Decode");
+		txtCurrency->Text = "0";
+		Clipboard::SetDataObject(lsCode, true, 10, 100);
+	}
+	private: System::Void btnUseCode_Click(System::Object^ sender, System::EventArgs^ e) {
+		String^ input = Microsoft::VisualBasic::Interaction::InputBox("What is the code?", "Redeem Code", "enter code here", -1, -1);
+		//MessageBox::Show(input);
+		if (input == "") {
+			return; // user canceled
+		}
+
+		CryptIt ci;
+		String^ lsCode = ci.Decrypt(input);
+
+		if (tl->IsNumeric(lsCode)) {
+			txtCurrency->Text = lsCode;
+		}
+		else {
+			MessageBox::Show(lsCode + " is not a valid code, sorry.", "Invalid code", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
 	};
-}
+};
