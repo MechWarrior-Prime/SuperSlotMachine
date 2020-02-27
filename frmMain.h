@@ -1,5 +1,6 @@
-#pragma once
+ï»¿#pragma once
 #include "classes.h"
+#include "functions.h"
 
 namespace SuperSlotMachine {
 	using namespace System;
@@ -10,7 +11,7 @@ namespace SuperSlotMachine {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Zusammenfassung für frmMain
+	/// Zusammenfassung fÃ¼r frmMain
 	/// </summary>
 	public enum class drum { d1, d2, d3 };
 	public ref class frmMain : public System::Windows::Forms::Form
@@ -22,7 +23,7 @@ namespace SuperSlotMachine {
 		{
 			InitializeComponent();
 			//
-			//TODO: Konstruktorcode hier hinzufügen.
+			//TODO: Konstruktorcode hier hinzufÃ¼gen.
 			//
 			playing_money = gcnew Currency;
 			playing_money->changeAmount(10025);// the 25 is b/c load does a click on btnSpin to init display
@@ -62,6 +63,7 @@ namespace SuperSlotMachine {
 	private: System::Windows::Forms::Button^ btnCalc;
 	private: System::Windows::Forms::Button^ btnCashIn;
 	private: System::Windows::Forms::Button^ btnUseCode;
+	private: System::Windows::Forms::RichTextBox^ rtbOutput;
 
 		   technolibCLR::TechnoClass^ tl = gcnew technolibCLR::TechnoClass;
 	protected:
@@ -97,8 +99,8 @@ namespace SuperSlotMachine {
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung.
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Erforderliche Methode fÃ¼r die DesignerunterstÃ¼tzung.
+		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geÃ¤ndert werden.
 		/// </summary>
 		void InitializeComponent(void)
 		{
@@ -131,11 +133,12 @@ namespace SuperSlotMachine {
 			this->lblDate = (gcnew System::Windows::Forms::Label());
 			this->lblTime = (gcnew System::Windows::Forms::Label());
 			this->btnCalc = (gcnew System::Windows::Forms::Button());
+			this->btnCashIn = (gcnew System::Windows::Forms::Button());
+			this->btnUseCode = (gcnew System::Windows::Forms::Button());
 			this->errorProviderMain = (gcnew System::Windows::Forms::ErrorProvider(this->components));
 			this->picSlotMachine = (gcnew System::Windows::Forms::PictureBox());
 			this->txtCurrency = (gcnew System::Windows::Forms::TextBox());
-			this->btnCashIn = (gcnew System::Windows::Forms::Button());
-			this->btnUseCode = (gcnew System::Windows::Forms::Button());
+			this->rtbOutput = (gcnew System::Windows::Forms::RichTextBox());
 			this->statusStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->perfcCPU))->BeginInit();
 			this->gbMainFrame->SuspendLayout();
@@ -187,7 +190,7 @@ namespace SuperSlotMachine {
 			this->toolStripStatusLabel2->Name = L"toolStripStatusLabel2";
 			this->toolStripStatusLabel2->Size = System::Drawing::Size(208, 17);
 			this->toolStripStatusLabel2->Spring = true;
-			this->toolStripStatusLabel2->Text = L"©2020 Frank G. Dahncke";
+			this->toolStripStatusLabel2->Text = L"Â©2020 Frank G. Dahncke";
 			this->toolStripStatusLabel2->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
 			//
 			// perfcCPU
@@ -213,6 +216,7 @@ namespace SuperSlotMachine {
 			//
 			// gbMainFrame
 			//
+			this->gbMainFrame->CausesValidation = false;
 			this->gbMainFrame->Controls->Add(this->lbl11);
 			this->gbMainFrame->Controls->Add(this->btnRespin3);
 			this->gbMainFrame->Controls->Add(this->btnRespin2);
@@ -224,6 +228,7 @@ namespace SuperSlotMachine {
 			this->gbMainFrame->Controls->Add(this->lbl13);
 			this->gbMainFrame->Controls->Add(this->lbl12);
 			this->gbMainFrame->Controls->Add(this->btnSpin);
+			this->gbMainFrame->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->gbMainFrame->Location = System::Drawing::Point(12, 12);
 			this->gbMainFrame->Name = L"gbMainFrame";
 			this->gbMainFrame->Size = System::Drawing::Size(187, 309);
@@ -471,6 +476,28 @@ namespace SuperSlotMachine {
 			this->btnCalc->UseVisualStyleBackColor = true;
 			this->btnCalc->Click += gcnew System::EventHandler(this, &frmMain::btnCalc_Click);
 			//
+			// btnCashIn
+			//
+			this->btnCashIn->Location = System::Drawing::Point(219, 235);
+			this->btnCashIn->Name = L"btnCashIn";
+			this->btnCashIn->Size = System::Drawing::Size(164, 28);
+			this->btnCashIn->TabIndex = 9;
+			this->btnCashIn->Text = L"Cash &In";
+			this->toolTipMain->SetToolTip(this->btnCashIn, L"Get a code for you money so you can play on later.");
+			this->btnCashIn->UseVisualStyleBackColor = true;
+			this->btnCashIn->Click += gcnew System::EventHandler(this, &frmMain::btnCashIn_Click);
+			//
+			// btnUseCode
+			//
+			this->btnUseCode->Location = System::Drawing::Point(220, 276);
+			this->btnUseCode->Name = L"btnUseCode";
+			this->btnUseCode->Size = System::Drawing::Size(164, 28);
+			this->btnUseCode->TabIndex = 10;
+			this->btnUseCode->Text = L"&Redeem code";
+			this->toolTipMain->SetToolTip(this->btnUseCode, L"Redeem a code you were given.");
+			this->btnUseCode->UseVisualStyleBackColor = true;
+			this->btnUseCode->Click += gcnew System::EventHandler(this, &frmMain::btnUseCode_Click);
+			//
 			// errorProviderMain
 			//
 			this->errorProviderMain->ContainerControl = this;
@@ -499,33 +526,25 @@ namespace SuperSlotMachine {
 			this->txtCurrency->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->txtCurrency->WordWrap = false;
 			//
-			// btnCashIn
+			// rtbOutput
 			//
-			this->btnCashIn->Location = System::Drawing::Point(219, 235);
-			this->btnCashIn->Name = L"btnCashIn";
-			this->btnCashIn->Size = System::Drawing::Size(164, 28);
-			this->btnCashIn->TabIndex = 9;
-			this->btnCashIn->Text = L"Cash &In";
-			this->toolTipMain->SetToolTip(this->btnCashIn, L"Get a code for you money so you can play on later.");
-			this->btnCashIn->UseVisualStyleBackColor = true;
-			this->btnCashIn->Click += gcnew System::EventHandler(this, &frmMain::btnCashIn_Click);
-			//
-			// btnUseCode
-			//
-			this->btnUseCode->Location = System::Drawing::Point(220, 276);
-			this->btnUseCode->Name = L"btnUseCode";
-			this->btnUseCode->Size = System::Drawing::Size(164, 28);
-			this->btnUseCode->TabIndex = 10;
-			this->btnUseCode->Text = L"&Redeem code";
-			this->toolTipMain->SetToolTip(this->btnUseCode, L"Redeem a code you were given.");
-			this->btnUseCode->UseVisualStyleBackColor = true;
-			this->btnUseCode->Click += gcnew System::EventHandler(this, &frmMain::btnUseCode_Click);
+			this->rtbOutput->BorderStyle = System::Windows::Forms::BorderStyle::None;
+			this->rtbOutput->CausesValidation = false;
+			this->rtbOutput->Location = System::Drawing::Point(412, 186);
+			this->rtbOutput->Name = L"rtbOutput";
+			this->rtbOutput->ReadOnly = true;
+			this->rtbOutput->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
+			this->rtbOutput->ShortcutsEnabled = false;
+			this->rtbOutput->Size = System::Drawing::Size(142, 118);
+			this->rtbOutput->TabIndex = 11;
+			this->rtbOutput->Text = L"";
 			//
 			// frmMain
 			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(571, 348);
+			this->Controls->Add(this->rtbOutput);
 			this->Controls->Add(this->btnUseCode);
 			this->Controls->Add(this->btnCashIn);
 			this->Controls->Add(this->btnCalc);
@@ -560,6 +579,8 @@ namespace SuperSlotMachine {
 		lblTime->Text = dt.Now.ToLongTimeString();
 	}
 	private: void RespinIt(drum mydrum) {
+		rtbOutput->Clear(); //remove any messages
+
 		Drum dr;
 		vector<char> vec;
 		switch (mydrum)
@@ -645,6 +666,8 @@ namespace SuperSlotMachine {
 		}
 	}
 	private:   void SpinIt() {
+		rtbOutput->Clear(); //remove any messages, this is a new game
+
 		Drum one;
 		Drum two;
 		Drum three;
@@ -676,46 +699,68 @@ namespace SuperSlotMachine {
 		lblDate->Text = tl->currentDECDate();
 		tl->InitRNG(); //set up the Random Number Generator
 		SpinIt();
+		this->Text += " V" + "1.1";// Application::ProductVersion;
 	}
 	private: Void CheckForWin() {
 		int winnings = 0;
 		if (lbl21->ImageIndex == lbl22->ImageIndex && (lbl21->ImageIndex == lbl23->ImageIndex)) {
-			winnings = 1000;
+			winnings += 1000;
 			MessageBox::Show("You win in the middle row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
-		else {
-			if (lbl11->ImageIndex == lbl22->ImageIndex && (lbl11->ImageIndex == lbl33->ImageIndex)) {
-				winnings = 1000;
-				MessageBox::Show("You win in a backslash!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
-			}
+
+		if (lbl11->ImageIndex == lbl22->ImageIndex && (lbl11->ImageIndex == lbl33->ImageIndex)) {
+			winnings += 1000;
+			MessageBox::Show("You win in a backslash!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 
 		if (lbl13->ImageIndex == lbl22->ImageIndex && (lbl13->ImageIndex == lbl31->ImageIndex)) {
-			winnings = 1000;
+			winnings += 1000;
 			MessageBox::Show("You win in a slash!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
-		if (lbl11->ImageIndex == lbl12->ImageIndex && (lbl21->ImageIndex == lbl23->ImageIndex)) {
-			winnings = 1000;
+		if (lbl11->ImageIndex == lbl12->ImageIndex && (lbl11->ImageIndex == lbl13->ImageIndex)) {
+			winnings += 1000;
 			MessageBox::Show("You win in the top row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 		if (lbl31->ImageIndex == lbl32->ImageIndex && (lbl31->ImageIndex == lbl33->ImageIndex)) {
-			winnings = 1000;
+			winnings += 1000;
 			MessageBox::Show("You win in the bottom row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
 		if (lbl21->ImageIndex == 12 && lbl22->ImageIndex == 12 && lbl23->ImageIndex == 12) { //fruit basket
-			winnings = 100000;
+			winnings += 100000;
+			try
+			{
+				String^ dir = System::IO::Path::GetDirectoryName(Application::ExecutablePath);
+
+				rtbOutput->LoadFile(System::String::Concat(dir, "\\JACKPOT.rtf"));
+			}
+			catch (Exception ^ ex)
+			{
+				MessageBox::Show(ex->Message, "Jackpot.rtf");
+			}
 			MessageBox::Show("One-Two-Three! You win the JACKPOT!", "JACKPOT", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
 		}
 		playing_money->changeAmount(winnings);
+
+		Transmute t;
+		if (winnings > 0) {
+			//rtbOutput->Rtf = t.PlainTextToRtf("WIN!");
+			rtbOutput->Text = "WIN!";
+		}
+		else
+		{
+			//rtbOutput->Rtf = t.PlainTextToRtf("no win");
+			rtbOutput->Text = "no win...";
+		};
+
 		ReDraw();
 	}
 	private: System::Void btnSpin_Click(System::Object^ sender, System::EventArgs^ e) {
 		SpinIt();
 		/* KEEP for debugging
-		lbl23->Text = ((wchar_t)'A').ToString();
-		lbl22->Text = ((wchar_t)'A').ToString();
-		lbl21->Text = ((wchar_t)'A').ToString();
-		*/
+		lbl21->ImageIndex = 12;
+		lbl22->ImageIndex = 12;
+		lbl23->ImageIndex = 12;
+*/
 		CheckForWin();
 	}
 	private: System::Void btnRespin1_Click(System::Object^ sender, System::EventArgs^ e) {

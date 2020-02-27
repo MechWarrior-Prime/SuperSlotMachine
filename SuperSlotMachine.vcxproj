@@ -89,11 +89,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
       <SubSystem>Windows</SubSystem>
       <EntryPointSymbol>main</EntryPointSymbol>
+      <Version>
+      </Version>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -115,7 +118,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="AssemblyInfo.cpp">
+      <FileType>CppCode</FileType>
+    </ClCompile>
     <ClCompile Include="frmMain.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -135,6 +140,7 @@
     <ClInclude Include="frmMain.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="functions.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frmMain.resx">

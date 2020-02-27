@@ -32,5 +32,8 @@
     <ClInclude Include="classes.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="functions.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,7 +12,8 @@ using namespace System::Security::Permissions;
 [assembly:AssemblyCopyrightAttribute("Copyright © 2020 Frank G. Dahncke")] ;
 [assembly:AssemblyTrademarkAttribute("Technosoft")] ;
 [assembly:AssemblyCultureAttribute("")] ;
-[assembly:AssemblyVersionAttribute("1.1.1.4")] ;
+[assembly:AssemblyVersionAttribute("1.1.1.5")] ;
+[assembly:AssemblyFileVersionAttribute("1.1.1.5")]
 [assembly:ComVisible(false)] ;
 [assembly:CLSCompliantAttribute(true)] ;
 [assembly:SecurityPermission(SecurityAction::RequestMinimum, UnmanagedCode = true)] ;
