@@ -748,7 +748,7 @@ namespace SuperSlotMachine {
 		playing_money->changeAmount(winnings);
 
 		if (!jackpot) {
-			Transmute t;
+			//Transmute t;
 			if (winnings > 0) {
 				//rtbOutput->Rtf = t.PlainTextToRtf("WIN!");
 				rtbOutput->Text = "You win " + winnings.ToString() + " on spin " + giSpinCount.ToString();
