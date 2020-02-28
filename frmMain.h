@@ -751,18 +751,26 @@ namespace SuperSlotMachine {
 			Transmute t;
 			if (winnings > 0) {
 				//rtbOutput->Rtf = t.PlainTextToRtf("WIN!");
-				rtbOutput->Text = "You win " + winnings.ToString();
+				rtbOutput->Text = "You win " + winnings.ToString() + " on spin " + giSpinCount.ToString();
+				BlockRespin(true); // after a win, leaving rows standing would increase chances
 			}
 			else
 			{
 				//rtbOutput->Rtf = t.PlainTextToRtf("no win");
-				rtbOutput->Text = "no win...";
+				rtbOutput->Text = "Spin " + giSpinCount.ToString() + ": no win";
 			};
 		};
+
 		ReDraw();
+	}
+	private: void BlockRespin(bool blocked) {
+		btnRespin1->Enabled = !blocked;
+		btnRespin2->Enabled = !blocked;
+		btnRespin3->Enabled = !blocked;
 	}
 	private: System::Void btnSpin_Click(System::Object^ sender, System::EventArgs^ e) {
 		SpinIt();
+		BlockRespin(false);
 		/* KEEP for debugging
 		lbl21->ImageIndex = 12;
 		lbl22->ImageIndex = 12;

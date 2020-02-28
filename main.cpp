@@ -5,7 +5,7 @@
 /*
 	Super Slot Machine for CLR
 	Frank G. Dahncke
-	Build 0006
+	Build 0007
 	21-FEB-2020	1.0		creation
 	25-FEB-2020	1.1		images
 	26-FEB-202	1.1.1	call CalculatorCLR
