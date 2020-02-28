@@ -18,6 +18,7 @@ namespace SuperSlotMachine {
 
 	{
 		Currency^ playing_money;
+		unsigned giSpinCount = 0;
 	public:
 		frmMain(void)
 		{
@@ -146,9 +147,9 @@ namespace SuperSlotMachine {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProviderMain))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picSlotMachine))->BeginInit();
 			this->SuspendLayout();
-			// 
+			//
 			// statusStrip1
-			// 
+			//
 			this->statusStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(4) {
 				this->toolStripStatusLabel1,
 					this->toolStripProgressBar1, this->tsslPercent, this->toolStripStatusLabel2
@@ -160,62 +161,62 @@ namespace SuperSlotMachine {
 			this->statusStrip1->SizingGrip = false;
 			this->statusStrip1->TabIndex = 1;
 			this->statusStrip1->Text = L"Status";
-			// 
+			//
 			// toolStripStatusLabel1
-			// 
+			//
 			this->toolStripStatusLabel1->Name = L"toolStripStatusLabel1";
 			this->toolStripStatusLabel1->Size = System::Drawing::Size(208, 17);
 			this->toolStripStatusLabel1->Spring = true;
 			this->toolStripStatusLabel1->Text = L"Total CPU Usage in %: ";
 			this->toolStripStatusLabel1->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
-			// 
+			//
 			// toolStripProgressBar1
-			// 
+			//
 			this->toolStripProgressBar1->AutoToolTip = true;
 			this->toolStripProgressBar1->Name = L"toolStripProgressBar1";
 			this->toolStripProgressBar1->Size = System::Drawing::Size(100, 16);
 			this->toolStripProgressBar1->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
 			this->toolStripProgressBar1->ToolTipText = L"Current usage of total processing power";
-			// 
+			//
 			// tsslPercent
-			// 
+			//
 			this->tsslPercent->AutoSize = false;
 			this->tsslPercent->Margin = System::Windows::Forms::Padding(-1, 3, 0, 2);
 			this->tsslPercent->Name = L"tsslPercent";
 			this->tsslPercent->Size = System::Drawing::Size(38, 17);
 			this->tsslPercent->Text = L"0% ";
-			// 
+			//
 			// toolStripStatusLabel2
-			// 
+			//
 			this->toolStripStatusLabel2->Name = L"toolStripStatusLabel2";
 			this->toolStripStatusLabel2->Size = System::Drawing::Size(208, 17);
 			this->toolStripStatusLabel2->Spring = true;
 			this->toolStripStatusLabel2->Text = L"©2020 Frank G. Dahncke";
 			this->toolStripStatusLabel2->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
-			// 
+			//
 			// perfcCPU
-			// 
+			//
 			this->perfcCPU->CategoryName = L"Processor";
 			this->perfcCPU->CounterName = L"% Processor Time";
 			this->perfcCPU->InstanceName = L"_Total";
-			// 
+			//
 			// tmrPerfCounter
-			// 
+			//
 			this->tmrPerfCounter->Enabled = true;
 			this->tmrPerfCounter->Interval = 1000;
 			this->tmrPerfCounter->Tick += gcnew System::EventHandler(this, &frmMain::tmrPerfCounter_Tick);
-			// 
+			//
 			// toolTipMain
-			// 
+			//
 			this->toolTipMain->AutoPopDelay = 5000;
 			this->toolTipMain->InitialDelay = 800;
 			this->toolTipMain->IsBalloon = true;
 			this->toolTipMain->ReshowDelay = 100;
 			this->toolTipMain->ToolTipIcon = System::Windows::Forms::ToolTipIcon::Info;
 			this->toolTipMain->ToolTipTitle = L"Super Slot Machine";
-			// 
+			//
 			// gbMainFrame
-			// 
+			//
 			this->gbMainFrame->CausesValidation = false;
 			this->gbMainFrame->Controls->Add(this->lbl11);
 			this->gbMainFrame->Controls->Add(this->btnRespin3);
@@ -236,9 +237,9 @@ namespace SuperSlotMachine {
 			this->gbMainFrame->TabStop = false;
 			this->gbMainFrame->Text = L"The Super Slot Machine";
 			this->toolTipMain->SetToolTip(this->gbMainFrame, L"This is the one-armed bandit");
-			// 
+			//
 			// lbl11
-			// 
+			//
 			this->lbl11->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->errorProviderMain->SetIconAlignment(this->lbl11, System::Windows::Forms::ErrorIconAlignment::MiddleLeft);
@@ -251,9 +252,9 @@ namespace SuperSlotMachine {
 			this->lbl11->TabIndex = 16;
 			this->lbl11->TextAlign = System::Drawing::ContentAlignment::MiddleRight;
 			this->lbl11->UseMnemonic = false;
-			// 
+			//
 			// ilFruit
-			// 
+			//
 			this->ilFruit->ImageStream = (cli::safe_cast<System::Windows::Forms::ImageListStreamer^>(resources->GetObject(L"ilFruit.ImageStream")));
 			this->ilFruit->TransparentColor = System::Drawing::Color::Transparent;
 			this->ilFruit->Images->SetKeyName(0, L"001-strawberry.png");
@@ -272,9 +273,9 @@ namespace SuperSlotMachine {
 			this->ilFruit->Images->SetKeyName(13, L"014-cabbage-1.png");
 			this->ilFruit->Images->SetKeyName(14, L"015-acorn.png");
 			this->ilFruit->Images->SetKeyName(15, L"016-banana.png");
-			// 
+			//
 			// btnRespin3
-			// 
+			//
 			this->btnRespin3->Location = System::Drawing::Point(131, 223);
 			this->btnRespin3->Name = L"btnRespin3";
 			this->btnRespin3->Size = System::Drawing::Size(28, 27);
@@ -284,9 +285,9 @@ namespace SuperSlotMachine {
 			this->btnRespin3->UseMnemonic = false;
 			this->btnRespin3->UseVisualStyleBackColor = true;
 			this->btnRespin3->Click += gcnew System::EventHandler(this, &frmMain::btnRespin3_Click);
-			// 
+			//
 			// btnRespin2
-			// 
+			//
 			this->btnRespin2->Location = System::Drawing::Point(77, 223);
 			this->btnRespin2->Name = L"btnRespin2";
 			this->btnRespin2->Size = System::Drawing::Size(28, 27);
@@ -296,9 +297,9 @@ namespace SuperSlotMachine {
 			this->btnRespin2->UseMnemonic = false;
 			this->btnRespin2->UseVisualStyleBackColor = true;
 			this->btnRespin2->Click += gcnew System::EventHandler(this, &frmMain::btnRespin2_Click);
-			// 
+			//
 			// btnRespin1
-			// 
+			//
 			this->btnRespin1->Location = System::Drawing::Point(19, 223);
 			this->btnRespin1->Name = L"btnRespin1";
 			this->btnRespin1->Size = System::Drawing::Size(28, 27);
@@ -308,9 +309,9 @@ namespace SuperSlotMachine {
 			this->btnRespin1->UseMnemonic = false;
 			this->btnRespin1->UseVisualStyleBackColor = true;
 			this->btnRespin1->Click += gcnew System::EventHandler(this, &frmMain::btnRespin1_Click);
-			// 
+			//
 			// gbWin
-			// 
+			//
 			this->gbWin->Controls->Add(this->lbl23);
 			this->gbWin->Controls->Add(this->lbl22);
 			this->gbWin->Controls->Add(this->lbl21);
@@ -321,9 +322,9 @@ namespace SuperSlotMachine {
 			this->gbWin->TabIndex = 12;
 			this->gbWin->TabStop = false;
 			this->toolTipMain->SetToolTip(this->gbWin, L"The winning row");
-			// 
+			//
 			// lbl23
-			// 
+			//
 			this->lbl23->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl23->ImageIndex = 0;
@@ -334,9 +335,9 @@ namespace SuperSlotMachine {
 			this->lbl23->TabIndex = 8;
 			this->lbl23->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl23->UseMnemonic = false;
-			// 
+			//
 			// lbl22
-			// 
+			//
 			this->lbl22->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl22->ImageIndex = 0;
@@ -347,9 +348,9 @@ namespace SuperSlotMachine {
 			this->lbl22->TabIndex = 7;
 			this->lbl22->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl22->UseMnemonic = false;
-			// 
+			//
 			// lbl21
-			// 
+			//
 			this->lbl21->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl21->ImageIndex = 0;
@@ -360,9 +361,9 @@ namespace SuperSlotMachine {
 			this->lbl21->TabIndex = 6;
 			this->lbl21->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl21->UseMnemonic = false;
-			// 
+			//
 			// lbl33
-			// 
+			//
 			this->lbl33->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl33->ImageIndex = 0;
@@ -373,9 +374,9 @@ namespace SuperSlotMachine {
 			this->lbl33->TabIndex = 11;
 			this->lbl33->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl33->UseMnemonic = false;
-			// 
+			//
 			// lbl32
-			// 
+			//
 			this->lbl32->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl32->ImageIndex = 0;
@@ -386,9 +387,9 @@ namespace SuperSlotMachine {
 			this->lbl32->TabIndex = 10;
 			this->lbl32->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl32->UseMnemonic = false;
-			// 
+			//
 			// lbl31
-			// 
+			//
 			this->lbl31->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl31->ImageIndex = 0;
@@ -399,9 +400,9 @@ namespace SuperSlotMachine {
 			this->lbl31->TabIndex = 9;
 			this->lbl31->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl31->UseMnemonic = false;
-			// 
+			//
 			// lbl13
-			// 
+			//
 			this->lbl13->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl13->ImageIndex = 0;
@@ -412,9 +413,9 @@ namespace SuperSlotMachine {
 			this->lbl13->TabIndex = 8;
 			this->lbl13->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl13->UseMnemonic = false;
-			// 
+			//
 			// lbl12
-			// 
+			//
 			this->lbl12->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl12->ImageIndex = 0;
@@ -425,21 +426,21 @@ namespace SuperSlotMachine {
 			this->lbl12->TabIndex = 7;
 			this->lbl12->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->lbl12->UseMnemonic = false;
-			// 
+			//
 			// btnSpin
-			// 
-			this->btnSpin->Location = System::Drawing::Point(19, 268);
+			//
+			this->btnSpin->Location = System::Drawing::Point(19, 264);
 			this->btnSpin->Name = L"btnSpin";
-			this->btnSpin->Size = System::Drawing::Size(141, 21);
+			this->btnSpin->Size = System::Drawing::Size(141, 28);
 			this->btnSpin->TabIndex = 3;
 			this->btnSpin->Text = L"SPIN";
 			this->toolTipMain->SetToolTip(this->btnSpin, L"Try your luck! Costs 25.");
 			this->btnSpin->UseMnemonic = false;
 			this->btnSpin->UseVisualStyleBackColor = true;
 			this->btnSpin->Click += gcnew System::EventHandler(this, &frmMain::btnSpin_Click);
-			// 
+			//
 			// lblDate
-			// 
+			//
 			this->lblDate->AutoSize = true;
 			this->lblDate->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lblDate->Font = (gcnew System::Drawing::Font(L"Consolas", 15.75F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
@@ -451,9 +452,9 @@ namespace SuperSlotMachine {
 			this->lblDate->Text = L"25-FEB-2020";
 			this->lblDate->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->toolTipMain->SetToolTip(this->lblDate, L"Date");
-			// 
+			//
 			// lblTime
-			// 
+			//
 			this->lblTime->FlatStyle = System::Windows::Forms::FlatStyle::System;
 			this->lblTime->Font = (gcnew System::Drawing::Font(L"Consolas", 14.25F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
@@ -464,9 +465,9 @@ namespace SuperSlotMachine {
 			this->lblTime->Text = L"00:00:00";
 			this->lblTime->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			this->toolTipMain->SetToolTip(this->lblTime, L"Timr");
-			// 
+			//
 			// btnCalc
-			// 
+			//
 			this->btnCalc->Location = System::Drawing::Point(412, 75);
 			this->btnCalc->Name = L"btnCalc";
 			this->btnCalc->Size = System::Drawing::Size(141, 36);
@@ -475,9 +476,9 @@ namespace SuperSlotMachine {
 			this->toolTipMain->SetToolTip(this->btnCalc, L"Useful mathematical functions for winning");
 			this->btnCalc->UseVisualStyleBackColor = true;
 			this->btnCalc->Click += gcnew System::EventHandler(this, &frmMain::btnCalc_Click);
-			// 
+			//
 			// btnCashIn
-			// 
+			//
 			this->btnCashIn->Location = System::Drawing::Point(219, 235);
 			this->btnCashIn->Name = L"btnCashIn";
 			this->btnCashIn->Size = System::Drawing::Size(164, 28);
@@ -486,9 +487,9 @@ namespace SuperSlotMachine {
 			this->toolTipMain->SetToolTip(this->btnCashIn, L"Get a code for you money so you can play on later.");
 			this->btnCashIn->UseVisualStyleBackColor = true;
 			this->btnCashIn->Click += gcnew System::EventHandler(this, &frmMain::btnCashIn_Click);
-			// 
+			//
 			// btnUseCode
-			// 
+			//
 			this->btnUseCode->Location = System::Drawing::Point(220, 276);
 			this->btnUseCode->Name = L"btnUseCode";
 			this->btnUseCode->Size = System::Drawing::Size(164, 28);
@@ -497,13 +498,13 @@ namespace SuperSlotMachine {
 			this->toolTipMain->SetToolTip(this->btnUseCode, L"Redeem a code you were given.");
 			this->btnUseCode->UseVisualStyleBackColor = true;
 			this->btnUseCode->Click += gcnew System::EventHandler(this, &frmMain::btnUseCode_Click);
-			// 
+			//
 			// errorProviderMain
-			// 
+			//
 			this->errorProviderMain->ContainerControl = this;
-			// 
+			//
 			// picSlotMachine
-			// 
+			//
 			this->picSlotMachine->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"picSlotMachine.Image")));
 			this->picSlotMachine->Location = System::Drawing::Point(214, 12);
 			this->picSlotMachine->Name = L"picSlotMachine";
@@ -511,9 +512,9 @@ namespace SuperSlotMachine {
 			this->picSlotMachine->SizeMode = System::Windows::Forms::PictureBoxSizeMode::Zoom;
 			this->picSlotMachine->TabIndex = 6;
 			this->picSlotMachine->TabStop = false;
-			// 
+			//
 			// txtCurrency
-			// 
+			//
 			this->txtCurrency->Font = (gcnew System::Drawing::Font(L"Courier New", 15.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->txtCurrency->Location = System::Drawing::Point(215, 186);
@@ -525,9 +526,9 @@ namespace SuperSlotMachine {
 			this->txtCurrency->Text = L"1000";
 			this->txtCurrency->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
 			this->txtCurrency->WordWrap = false;
-			// 
+			//
 			// rtbOutput
-			// 
+			//
 			this->rtbOutput->BorderStyle = System::Windows::Forms::BorderStyle::None;
 			this->rtbOutput->CausesValidation = false;
 			this->rtbOutput->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
@@ -540,9 +541,9 @@ namespace SuperSlotMachine {
 			this->rtbOutput->Size = System::Drawing::Size(142, 137);
 			this->rtbOutput->TabIndex = 11;
 			this->rtbOutput->Text = L"\nHit SPIN to begin!";
-			// 
+			//
 			// frmMain
-			// 
+			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(571, 348);
@@ -572,7 +573,6 @@ namespace SuperSlotMachine {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picSlotMachine))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
-
 		}
 #pragma endregion
 	private: System::Void tmrPerfCounter_Tick(System::Object^ sender, System::EventArgs^ e) {
@@ -583,7 +583,7 @@ namespace SuperSlotMachine {
 	}
 	private: void RespinIt(drum mydrum) {
 		rtbOutput->Clear(); //remove any messages
-
+		giSpinCount += 1;
 		Drum dr;
 		vector<char> vec;
 		switch (mydrum)
@@ -669,7 +669,8 @@ namespace SuperSlotMachine {
 		}
 	}
 	private:   void SpinIt() {
-		rtbOutput->Clear(); //remove any messages, this is a new game
+		if (!giSpinCount == 0) rtbOutput->Clear(); //if its not the first game, remove any messages
+		giSpinCount += 1;
 
 		Drum one;
 		Drum two;
@@ -703,6 +704,7 @@ namespace SuperSlotMachine {
 		tl->InitRNG(); //set up the Random Number Generator
 		SpinIt();
 		this->Text += " V" + "1.1";// Application::ProductVersion;
+		//this->Text += " V" + Application::ProductVersion;
 	}
 	private: Void CheckForWin() {
 		int winnings = 0;

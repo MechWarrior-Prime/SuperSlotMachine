@@ -1,9 +1,11 @@
+// created along this guideline: https://www.codeproject.com/Articles/721062/Cplusplus-CLI-for-Beginners
+
 #include "frmMain.h"
 #include <algorithm> // very powerful library, esp. for sorts, finds and strange stuff
 /*
 	Super Slot Machine for CLR
 	Frank G. Dahncke
-	Build 0005
+	Build 0006
 	21-FEB-2020	1.0		creation
 	25-FEB-2020	1.1		images
 	26-FEB-202	1.1.1	call CalculatorCLR
@@ -11,10 +13,10 @@
 
 using namespace System;
 using namespace System::Windows::Forms;
-using namespace  System::Reflection;
+using namespace System::Reflection;
 
-[assembly:AssemblyVersionAttribute("1.1.1.5")] ;
-[assembly:AssemblyFileVersionAttribute("1.1.1.5")] ;
+[assembly:AssemblyVersionAttribute("1.1.1.6")] ;
+[assembly:AssemblyFileVersionAttribute("1.1.1.6")] ;
 
 // no [STAThread], b/c it impairs applications with a GUI
 [STAThread] //needed for Clipboard actions
