@@ -79,4 +79,12 @@ public:
 
 		return result;
 	}
+	String^ Drum::show() { //  for debugging
+		String^ result = "";
+		for (int i = 0; i < 16; i++) {
+			result += wchar_t(sign[i]);
+			result += " ";
+		};
+		return result;
+	}
 };

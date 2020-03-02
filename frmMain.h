@@ -37,7 +37,7 @@ namespace SuperSlotMachine {
 			//TODO: Konstruktorcode hier hinzufügen.
 			//
 			playing_money = gcnew Currency;
-			playing_money->changeAmount(10025);// the 25 is b/c load does a click on btnSpin to init display
+			playing_money->changeAmount(10000);// initial currency
 		}
 
 	private: System::Windows::Forms::GroupBox^ gbMainFrame;
@@ -655,6 +655,7 @@ namespace SuperSlotMachine {
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Techno\'s Super Slot Machine";
 			this->Load += gcnew System::EventHandler(this, &frmMain::frmMain_Load);
+			this->DoubleClick += gcnew System::EventHandler(this, &frmMain::frmMain_DoubleClick);
 			this->statusStrip1->ResumeLayout(false);
 			this->statusStrip1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->perfcCPU))->EndInit();
@@ -682,18 +683,24 @@ namespace SuperSlotMachine {
 		{
 		case SuperSlotMachine::drum::d1:
 			vec = dr.spin(false);
+			//MessageBox::Show(dr.show());
 			lbl11->ImageIndex = Char2Int((wchar_t)vec[0]);
 			lbl21->ImageIndex = Char2Int((wchar_t)vec[1]);
 			lbl31->ImageIndex = Char2Int((wchar_t)vec[2]);
 			break;
 		case SuperSlotMachine::drum::d2:
 			vec = dr.spin(true);
+			//if (dr.spin[0] != 'F') {
+			//	MessageBox::Show("not reverse");
+			//};
+			//MessageBox::Show(dr.show());
 			lbl12->ImageIndex = Char2Int((wchar_t)vec[0]);
 			lbl22->ImageIndex = Char2Int((wchar_t)vec[1]);
 			lbl32->ImageIndex = Char2Int((wchar_t)vec[2]);
 			break;
 		case SuperSlotMachine::drum::d3:
 			vec = dr.spin(false);
+			//MessageBox::Show(dr.show());
 			lbl13->ImageIndex = Char2Int((wchar_t)vec[0]);
 			lbl23->ImageIndex = Char2Int((wchar_t)vec[1]);
 			lbl33->ImageIndex = Char2Int((wchar_t)vec[2]);
@@ -890,7 +897,7 @@ namespace SuperSlotMachine {
 
 	private: void ReDraw() {
 		txtCurrency->Text = playing_money->getAmount().ToString();
-		lblSpins->Text = "Spins: " + giSpinCount.ToString();
+		lblSpins->Text = "Spins: " + (giSpinCount - 1).ToString(); // remove count created by programmatic click at load
 		lblWins->Text = "Wins: " + giWins.ToString();
 		lblLost->Text = "Lost: " + giLost.ToString();
 		lblWinnings->Text = "Winnings: " + giWinnings.ToString();
@@ -935,6 +942,8 @@ namespace SuperSlotMachine {
 		else {
 			MessageBox::Show(lsCode + " is not a valid code, sorry.", "Invalid code", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
+	}
+	private: System::Void frmMain_DoubleClick(System::Object^ sender, System::EventArgs^ e) {
 	}
 	};
 };
