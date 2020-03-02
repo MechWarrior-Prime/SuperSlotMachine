@@ -11,7 +11,7 @@ namespace SuperSlotMachine {
 	using namespace System::Drawing;
 
 	/// <summary>
-	/// Zusammenfassung für frmMain
+	/// this is the main form
 	/// </summary>
 	public enum class drum { d1, d2, d3 };
 	public ref class frmMain : public System::Windows::Forms::Form
@@ -20,7 +20,15 @@ namespace SuperSlotMachine {
 		Currency^ playing_money;
 	private: System::Windows::Forms::GroupBox^ gbStats;
 	private: System::Windows::Forms::Label^ lblSpins;
+	private: System::Windows::Forms::Label^ lblLost;
+	private: System::Windows::Forms::Label^ lblWins;
 		   unsigned giSpinCount = 0;
+		   unsigned giWins = 0;
+		   unsigned giLost = 0;
+		   unsigned giWinnings = 0; // currency
+	private: System::Windows::Forms::Label^ lblLosses;
+	private: System::Windows::Forms::Label^ lblWinnings;
+		   unsigned giLosses = 0; // currency
 	public:
 		frmMain(void)
 		{
@@ -138,19 +146,23 @@ namespace SuperSlotMachine {
 			this->btnCalc = (gcnew System::Windows::Forms::Button());
 			this->btnCashIn = (gcnew System::Windows::Forms::Button());
 			this->btnUseCode = (gcnew System::Windows::Forms::Button());
+			this->gbStats = (gcnew System::Windows::Forms::GroupBox());
+			this->lblLosses = (gcnew System::Windows::Forms::Label());
+			this->lblWinnings = (gcnew System::Windows::Forms::Label());
+			this->lblLost = (gcnew System::Windows::Forms::Label());
+			this->lblWins = (gcnew System::Windows::Forms::Label());
+			this->lblSpins = (gcnew System::Windows::Forms::Label());
 			this->errorProviderMain = (gcnew System::Windows::Forms::ErrorProvider(this->components));
 			this->picSlotMachine = (gcnew System::Windows::Forms::PictureBox());
 			this->txtCurrency = (gcnew System::Windows::Forms::TextBox());
 			this->rtbOutput = (gcnew System::Windows::Forms::RichTextBox());
-			this->gbStats = (gcnew System::Windows::Forms::GroupBox());
-			this->lblSpins = (gcnew System::Windows::Forms::Label());
 			this->statusStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->perfcCPU))->BeginInit();
 			this->gbMainFrame->SuspendLayout();
 			this->gbWin->SuspendLayout();
+			this->gbStats->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProviderMain))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picSlotMachine))->BeginInit();
-			this->gbStats->SuspendLayout();
 			this->SuspendLayout();
 			//
 			// statusStrip1
@@ -281,6 +293,7 @@ namespace SuperSlotMachine {
 			//
 			// btnRespin3
 			//
+			this->btnRespin3->Enabled = false;
 			this->btnRespin3->Location = System::Drawing::Point(131, 223);
 			this->btnRespin3->Name = L"btnRespin3";
 			this->btnRespin3->Size = System::Drawing::Size(28, 27);
@@ -293,6 +306,7 @@ namespace SuperSlotMachine {
 			//
 			// btnRespin2
 			//
+			this->btnRespin2->Enabled = false;
 			this->btnRespin2->Location = System::Drawing::Point(77, 223);
 			this->btnRespin2->Name = L"btnRespin2";
 			this->btnRespin2->Size = System::Drawing::Size(28, 27);
@@ -305,6 +319,7 @@ namespace SuperSlotMachine {
 			//
 			// btnRespin1
 			//
+			this->btnRespin1->Enabled = false;
 			this->btnRespin1->Location = System::Drawing::Point(19, 223);
 			this->btnRespin1->Name = L"btnRespin1";
 			this->btnRespin1->Size = System::Drawing::Size(28, 27);
@@ -504,6 +519,76 @@ namespace SuperSlotMachine {
 			this->btnUseCode->UseVisualStyleBackColor = true;
 			this->btnUseCode->Click += gcnew System::EventHandler(this, &frmMain::btnUseCode_Click);
 			//
+			// gbStats
+			//
+			this->gbStats->Controls->Add(this->lblLosses);
+			this->gbStats->Controls->Add(this->lblWinnings);
+			this->gbStats->Controls->Add(this->lblLost);
+			this->gbStats->Controls->Add(this->lblWins);
+			this->gbStats->Controls->Add(this->lblSpins);
+			this->gbStats->Location = System::Drawing::Point(416, 117);
+			this->gbStats->Name = L"gbStats";
+			this->gbStats->Size = System::Drawing::Size(136, 118);
+			this->gbStats->TabIndex = 12;
+			this->gbStats->TabStop = false;
+			this->gbStats->Text = L"Statistics";
+			this->toolTipMain->SetToolTip(this->gbStats, L"Game Statistics");
+			//
+			// lblLosses
+			//
+			this->lblLosses->Dock = System::Windows::Forms::DockStyle::Top;
+			this->lblLosses->Location = System::Drawing::Point(3, 92);
+			this->lblLosses->Name = L"lblLosses";
+			this->lblLosses->Size = System::Drawing::Size(130, 19);
+			this->lblLosses->TabIndex = 4;
+			this->lblLosses->Text = L"Losses:";
+			this->lblLosses->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->toolTipMain->SetToolTip(this->lblLosses, L"How much was paid");
+			//
+			// lblWinnings
+			//
+			this->lblWinnings->Dock = System::Windows::Forms::DockStyle::Top;
+			this->lblWinnings->Location = System::Drawing::Point(3, 73);
+			this->lblWinnings->Name = L"lblWinnings";
+			this->lblWinnings->Size = System::Drawing::Size(130, 19);
+			this->lblWinnings->TabIndex = 3;
+			this->lblWinnings->Text = L"Winnings:";
+			this->lblWinnings->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->toolTipMain->SetToolTip(this->lblWinnings, L"How much was earned");
+			//
+			// lblLost
+			//
+			this->lblLost->Dock = System::Windows::Forms::DockStyle::Top;
+			this->lblLost->Location = System::Drawing::Point(3, 54);
+			this->lblLost->Name = L"lblLost";
+			this->lblLost->Size = System::Drawing::Size(130, 19);
+			this->lblLost->TabIndex = 2;
+			this->lblLost->Text = L"Lost:";
+			this->lblLost->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->toolTipMain->SetToolTip(this->lblLost, L"How many plays lost");
+			//
+			// lblWins
+			//
+			this->lblWins->Dock = System::Windows::Forms::DockStyle::Top;
+			this->lblWins->Location = System::Drawing::Point(3, 35);
+			this->lblWins->Name = L"lblWins";
+			this->lblWins->Size = System::Drawing::Size(130, 19);
+			this->lblWins->TabIndex = 1;
+			this->lblWins->Text = L"Wins:";
+			this->lblWins->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->toolTipMain->SetToolTip(this->lblWins, L"How many wins were scored");
+			//
+			// lblSpins
+			//
+			this->lblSpins->Dock = System::Windows::Forms::DockStyle::Top;
+			this->lblSpins->Location = System::Drawing::Point(3, 16);
+			this->lblSpins->Name = L"lblSpins";
+			this->lblSpins->Size = System::Drawing::Size(130, 19);
+			this->lblSpins->TabIndex = 0;
+			this->lblSpins->Text = L"Spins:";
+			this->lblSpins->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->toolTipMain->SetToolTip(this->lblSpins, L"How many plays were made");
+			//
 			// errorProviderMain
 			//
 			this->errorProviderMain->ContainerControl = this;
@@ -547,28 +632,6 @@ namespace SuperSlotMachine {
 			this->rtbOutput->TabIndex = 11;
 			this->rtbOutput->Text = L"\nHit SPIN to begin!";
 			//
-			// gbStats
-			//
-			this->gbStats->Controls->Add(this->lblSpins);
-			this->gbStats->Location = System::Drawing::Point(416, 117);
-			this->gbStats->Name = L"gbStats";
-			this->gbStats->Size = System::Drawing::Size(136, 118);
-			this->gbStats->TabIndex = 12;
-			this->gbStats->TabStop = false;
-			this->gbStats->Text = L"Statistics";
-			this->toolTipMain->SetToolTip(this->gbStats, L"Game Statistics");
-			//
-			// lblSpins
-			//
-			this->lblSpins->Dock = System::Windows::Forms::DockStyle::Top;
-			this->lblSpins->Location = System::Drawing::Point(3, 16);
-			this->lblSpins->Name = L"lblSpins";
-			this->lblSpins->Size = System::Drawing::Size(130, 19);
-			this->lblSpins->TabIndex = 0;
-			this->lblSpins->Text = L"Spins:";
-			this->lblSpins->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
-			this->toolTipMain->SetToolTip(this->lblSpins, L"How many plays were made");
-			//
 			// frmMain
 			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -597,9 +660,9 @@ namespace SuperSlotMachine {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->perfcCPU))->EndInit();
 			this->gbMainFrame->ResumeLayout(false);
 			this->gbWin->ResumeLayout(false);
+			this->gbStats->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProviderMain))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picSlotMachine))->EndInit();
-			this->gbStats->ResumeLayout(false);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 		}
@@ -638,7 +701,9 @@ namespace SuperSlotMachine {
 		default:
 			break;
 		}
+		giSpinCount += 1;
 		playing_money->changeAmount(-100);
+		giLosses += 100;
 		CheckForWin();
 		ReDraw();
 	} // ReSpin
@@ -698,8 +763,12 @@ namespace SuperSlotMachine {
 		}
 	}
 	private:   void SpinIt() {
-		if (!giSpinCount == 0) rtbOutput->Clear(); //if its not the first game, remove any messages
-
+		if (!giSpinCount == 0) {	//if its not the first game,...
+			rtbOutput->Clear();		//  ... remove any messages
+			playing_money->changeAmount(-25); // ... charge the player
+			giLosses += 25;			// ...update stats
+		}
+		giSpinCount += 1;
 		Drum one;
 		Drum two;
 		Drum three;
@@ -724,19 +793,19 @@ namespace SuperSlotMachine {
 		lbl32->ImageIndex = Char2Int((wchar_t)v2[0]);
 		lbl33->ImageIndex = Char2Int((wchar_t)v3[0]);
 
-		playing_money->changeAmount(-25);
 		ReDraw();
 	}
 	private: System::Void frmMain_Load(System::Object^ sender, System::EventArgs^ e) {
 		lblDate->Text = tl->currentDECDate();
-		tl->InitRNG(); //set up the Random Number Generator
-		SpinIt();
-		this->Text += " V" + "1.1";// Application::ProductVersion;
+		tl->InitRNG();	//set up the Random Number Generator
+		SpinIt();		// fill the slots, does not counts as a play
+		this->Text += " V" + "1.2";// Application::ProductVersion;
 		//this->Text += " V" + Application::ProductVersion;
 	}
 	private: Void CheckForWin() {
 		int winnings = 0;
 		bool jackpot = false;
+
 		if (lbl21->ImageIndex == lbl22->ImageIndex && (lbl21->ImageIndex == lbl23->ImageIndex)) {
 			winnings += 1000;
 			MessageBox::Show("You win in the middle row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
@@ -761,6 +830,7 @@ namespace SuperSlotMachine {
 		}
 		if (lbl21->ImageIndex == 12 && lbl22->ImageIndex == 12 && lbl23->ImageIndex == 12) { //fruit basket
 			winnings += 100000;
+			giWins += 1;
 			try
 			{
 				String^ dir = System::IO::Path::GetDirectoryName(Application::ExecutablePath);
@@ -781,14 +851,16 @@ namespace SuperSlotMachine {
 				//rtbOutput->Rtf = t.PlainTextToRtf("WIN!");
 				rtbOutput->Text = "You win " + winnings.ToString() + " on spin " + giSpinCount.ToString();
 				BlockRespin(true); // after a win, leaving rows standing would increase chances
+				giWins += 1;
 			}
 			else
 			{
 				//rtbOutput->Rtf = t.PlainTextToRtf("no win");
 				rtbOutput->Text = "Spin " + giSpinCount.ToString() + ": no win";
+				giLost += 1;
 			};
 		};
-		giSpinCount += 1; //only spins made for win count
+		giWinnings += winnings;
 		ReDraw();
 	}
 	private: void BlockRespin(bool blocked) {
@@ -819,6 +891,10 @@ namespace SuperSlotMachine {
 	private: void ReDraw() {
 		txtCurrency->Text = playing_money->getAmount().ToString();
 		lblSpins->Text = "Spins: " + giSpinCount.ToString();
+		lblWins->Text = "Wins: " + giWins.ToString();
+		lblLost->Text = "Lost: " + giLost.ToString();
+		lblWinnings->Text = "Winnings: " + giWinnings.ToString();
+		lblLosses->Text = "Losses: " + giLosses.ToString();
 	}
 	private: System::Void btnCalc_Click(System::Object^ sender, System::EventArgs^ e) {
 		try
