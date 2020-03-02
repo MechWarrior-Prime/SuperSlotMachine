@@ -5,10 +5,11 @@
 /*
 	Super Slot Machine for CLR
 	Frank G. Dahncke
-	Build 0007
+	Build 0008
 	21-FEB-2020	1.0		creation
 	25-FEB-2020	1.1		images
-	26-FEB-202	1.1.1	call CalculatorCLR
+	26-FEB-2020	1.1.1	call CalculatorCLR
+	02-MAR-2020 1.2		statistics
 */
 
 using namespace System;

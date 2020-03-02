@@ -18,7 +18,9 @@ namespace SuperSlotMachine {
 
 	{
 		Currency^ playing_money;
-		unsigned giSpinCount = 0;
+	private: System::Windows::Forms::GroupBox^ gbStats;
+	private: System::Windows::Forms::Label^ lblSpins;
+		   unsigned giSpinCount = 0;
 	public:
 		frmMain(void)
 		{
@@ -140,12 +142,15 @@ namespace SuperSlotMachine {
 			this->picSlotMachine = (gcnew System::Windows::Forms::PictureBox());
 			this->txtCurrency = (gcnew System::Windows::Forms::TextBox());
 			this->rtbOutput = (gcnew System::Windows::Forms::RichTextBox());
+			this->gbStats = (gcnew System::Windows::Forms::GroupBox());
+			this->lblSpins = (gcnew System::Windows::Forms::Label());
 			this->statusStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->perfcCPU))->BeginInit();
 			this->gbMainFrame->SuspendLayout();
 			this->gbWin->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProviderMain))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picSlotMachine))->BeginInit();
+			this->gbStats->SuspendLayout();
 			this->SuspendLayout();
 			//
 			// statusStrip1
@@ -533,20 +538,43 @@ namespace SuperSlotMachine {
 			this->rtbOutput->CausesValidation = false;
 			this->rtbOutput->Font = (gcnew System::Drawing::Font(L"Comic Sans MS", 11.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->rtbOutput->Location = System::Drawing::Point(412, 167);
+			this->rtbOutput->Location = System::Drawing::Point(412, 235);
 			this->rtbOutput->Name = L"rtbOutput";
 			this->rtbOutput->ReadOnly = true;
 			this->rtbOutput->ScrollBars = System::Windows::Forms::RichTextBoxScrollBars::None;
 			this->rtbOutput->ShortcutsEnabled = false;
-			this->rtbOutput->Size = System::Drawing::Size(142, 137);
+			this->rtbOutput->Size = System::Drawing::Size(142, 69);
 			this->rtbOutput->TabIndex = 11;
 			this->rtbOutput->Text = L"\nHit SPIN to begin!";
+			//
+			// gbStats
+			//
+			this->gbStats->Controls->Add(this->lblSpins);
+			this->gbStats->Location = System::Drawing::Point(416, 117);
+			this->gbStats->Name = L"gbStats";
+			this->gbStats->Size = System::Drawing::Size(136, 118);
+			this->gbStats->TabIndex = 12;
+			this->gbStats->TabStop = false;
+			this->gbStats->Text = L"Statistics";
+			this->toolTipMain->SetToolTip(this->gbStats, L"Game Statistics");
+			//
+			// lblSpins
+			//
+			this->lblSpins->Dock = System::Windows::Forms::DockStyle::Top;
+			this->lblSpins->Location = System::Drawing::Point(3, 16);
+			this->lblSpins->Name = L"lblSpins";
+			this->lblSpins->Size = System::Drawing::Size(130, 19);
+			this->lblSpins->TabIndex = 0;
+			this->lblSpins->Text = L"Spins:";
+			this->lblSpins->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			this->toolTipMain->SetToolTip(this->lblSpins, L"How many plays were made");
 			//
 			// frmMain
 			//
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(571, 348);
+			this->Controls->Add(this->gbStats);
 			this->Controls->Add(this->rtbOutput);
 			this->Controls->Add(this->btnUseCode);
 			this->Controls->Add(this->btnCashIn);
@@ -571,6 +599,7 @@ namespace SuperSlotMachine {
 			this->gbWin->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->errorProviderMain))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->picSlotMachine))->EndInit();
+			this->gbStats->ResumeLayout(false);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 		}
@@ -583,7 +612,7 @@ namespace SuperSlotMachine {
 	}
 	private: void RespinIt(drum mydrum) {
 		rtbOutput->Clear(); //remove any messages
-		giSpinCount += 1;
+
 		Drum dr;
 		vector<char> vec;
 		switch (mydrum)
@@ -670,7 +699,6 @@ namespace SuperSlotMachine {
 	}
 	private:   void SpinIt() {
 		if (!giSpinCount == 0) rtbOutput->Clear(); //if its not the first game, remove any messages
-		giSpinCount += 1;
 
 		Drum one;
 		Drum two;
@@ -760,7 +788,7 @@ namespace SuperSlotMachine {
 				rtbOutput->Text = "Spin " + giSpinCount.ToString() + ": no win";
 			};
 		};
-
+		giSpinCount += 1; //only spins made for win count
 		ReDraw();
 	}
 	private: void BlockRespin(bool blocked) {
@@ -790,13 +818,14 @@ namespace SuperSlotMachine {
 
 	private: void ReDraw() {
 		txtCurrency->Text = playing_money->getAmount().ToString();
+		lblSpins->Text = "Spins: " + giSpinCount.ToString();
 	}
 	private: System::Void btnCalc_Click(System::Object^ sender, System::EventArgs^ e) {
 		try
 		{
 			System::Diagnostics::Process^ CalcProc = gcnew System::Diagnostics::Process;
 			String^ dir = System::IO::Path::GetDirectoryName(Application::ExecutablePath);
-			//MessageBox::Show(System::String::Concat(dir, "\\CalculatorCLR.exe"));
+
 			CalcProc->StartInfo->FileName = System::String::Concat(dir, "\\CalculatorCLR.exe");
 			CalcProc->StartInfo->WindowStyle = System::Diagnostics::ProcessWindowStyle::Normal;
 			CalcProc->Start();
