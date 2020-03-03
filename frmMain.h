@@ -649,6 +649,7 @@ namespace SuperSlotMachine {
 			this->Controls->Add(this->gbMainFrame);
 			this->Controls->Add(this->statusStrip1);
 			this->DoubleBuffered = true;
+			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
 			this->MaximizeBox = false;
 			this->Name = L"frmMain";
@@ -679,10 +680,12 @@ namespace SuperSlotMachine {
 
 		Drum dr;
 		vector<char> vec;
+		String^ result = "";
 		switch (mydrum)
 		{
 		case SuperSlotMachine::drum::d1:
 			vec = dr.spin(false);
+
 			//MessageBox::Show(dr.show());
 			lbl11->ImageIndex = Char2Int((wchar_t)vec[0]);
 			lbl21->ImageIndex = Char2Int((wchar_t)vec[1]);
@@ -690,9 +693,10 @@ namespace SuperSlotMachine {
 			break;
 		case SuperSlotMachine::drum::d2:
 			vec = dr.spin(true);
-			//if (dr.spin[0] != 'F') {
-			//	MessageBox::Show("not reverse");
-			//};
+			result = dr.show();
+			if (!result->StartsWith("F ")) { // for debug
+				MessageBox::Show("Not reversed!");
+			};
 			//MessageBox::Show(dr.show());
 			lbl12->ImageIndex = Char2Int((wchar_t)vec[0]);
 			lbl22->ImageIndex = Char2Int((wchar_t)vec[1]);
