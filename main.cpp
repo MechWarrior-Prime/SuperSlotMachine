@@ -1,11 +1,12 @@
 // created along this guideline: https://www.codeproject.com/Articles/721062/Cplusplus-CLI-for-Beginners
+// under guidance of Wenzel Hilbig of alfatraining
 
 #include "frmMain.h"
 #include <algorithm> // very powerful library, esp. for sorts, finds and strange stuff
 /*
 	Super Slot Machine for CLR
 	Frank G. Dahncke
-	Build 0011
+	Build 0012
 	21-FEB-2020	1.0		creation
 	25-FEB-2020	1.1		images
 	26-FEB-2020	1.1.1	call CalculatorCLR

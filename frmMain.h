@@ -22,13 +22,13 @@ namespace SuperSlotMachine {
 	private: System::Windows::Forms::Label^ lblSpins;
 	private: System::Windows::Forms::Label^ lblLost;
 	private: System::Windows::Forms::Label^ lblWins;
-		   unsigned giSpinCount = 0;
-		   unsigned giWins = 0;
-		   unsigned giLost = 0;
-		   unsigned giWinnings = 0; // currency
+		   unsigned guSpinCount = 0;
+		   unsigned guWins = 0;
+		   unsigned guLost = 0;
+		   unsigned guWinnings = 0; // currency
 	private: System::Windows::Forms::Label^ lblLosses;
 	private: System::Windows::Forms::Label^ lblWinnings;
-		   unsigned giLosses = 0; // currency
+		   unsigned guLosses = 0; // currency
 	public:
 		frmMain(void)
 		{
@@ -678,6 +678,11 @@ namespace SuperSlotMachine {
 	private: void RespinIt(drum mydrum) {
 		rtbOutput->Clear(); //remove any messages
 
+		if (playing_money->getAmount() - 100 <= 0) {
+			rtbOutput->Text = "Insufficient funds";
+			return;
+		}
+
 		Drum dr;
 		vector<char> vec;
 		String^ result = "";
@@ -712,9 +717,9 @@ namespace SuperSlotMachine {
 		default:
 			break;
 		}
-		giSpinCount += 1;
+		guSpinCount += 1;
 		playing_money->changeAmount(-100);
-		giLosses += 100;
+		guLosses += 100;
 		CheckForWin();
 		ReDraw();
 	} // ReSpin
@@ -774,12 +779,19 @@ namespace SuperSlotMachine {
 		}
 	}
 	private:   void SpinIt() {
-		if (!giSpinCount == 0) {	//if its not the first game,...
+		if (playing_money->getAmount() - 25 <= 0) {
+			rtbOutput->Text = "GAME OVER";
+			MessageBox::Show("Sorry, you are broke. Try again another time!", "GAME OVER");
+			Application::Exit();
+			return;
+		}
+
+		if (!guSpinCount == 0) {	//if its not the first game,...
 			rtbOutput->Clear();		//  ... remove any messages
 			playing_money->changeAmount(-25); // ... charge the player
-			giLosses += 25;			// ...update stats
+			guLosses += 25;			// ...update stats
 		}
-		giSpinCount += 1;
+		guSpinCount += 1;
 		Drum one;
 		Drum two;
 		Drum three;
@@ -841,7 +853,7 @@ namespace SuperSlotMachine {
 		}
 		if (lbl21->ImageIndex == 12 && lbl22->ImageIndex == 12 && lbl23->ImageIndex == 12) { //fruit basket
 			winnings += 100000;
-			giWins += 1;
+			guWins += 1;
 			try
 			{
 				String^ dir = System::IO::Path::GetDirectoryName(Application::ExecutablePath);
@@ -860,18 +872,18 @@ namespace SuperSlotMachine {
 			//Transmute t;
 			if (winnings > 0) {
 				//rtbOutput->Rtf = t.PlainTextToRtf("WIN!");
-				rtbOutput->Text = "You win " + winnings.ToString() + " on spin " + giSpinCount.ToString();
+				rtbOutput->Text = "You win " + winnings.ToString() + " on spin " + guSpinCount.ToString();
 				BlockRespin(true); // after a win, leaving rows standing would increase chances
-				giWins += 1;
+				guWins += 1;
 			}
 			else
 			{
 				//rtbOutput->Rtf = t.PlainTextToRtf("no win");
-				rtbOutput->Text = "Spin " + giSpinCount.ToString() + ": no win";
-				giLost += 1;
+				rtbOutput->Text = "Spin " + guSpinCount.ToString() + ": no win";
+				guLost += 1;
 			};
 		};
-		giWinnings += winnings;
+		guWinnings += winnings;
 		ReDraw();
 	}
 	private: void BlockRespin(bool blocked) {
@@ -901,11 +913,11 @@ namespace SuperSlotMachine {
 
 	private: void ReDraw() {
 		txtCurrency->Text = playing_money->getAmount().ToString();
-		lblSpins->Text = "Spins: " + (giSpinCount - 1).ToString(); // remove count created by programmatic click at load
-		lblWins->Text = "Wins: " + giWins.ToString();
-		lblLost->Text = "Lost: " + giLost.ToString();
-		lblWinnings->Text = "Winnings: " + giWinnings.ToString();
-		lblLosses->Text = "Losses: " + giLosses.ToString();
+		lblSpins->Text = "Spins: " + (guSpinCount - 1).ToString(); // remove count created by programmatic click at load
+		lblWins->Text = "Wins: " + guWins.ToString();
+		lblLost->Text = "Lost: " + guLost.ToString();
+		lblWinnings->Text = "Winnings: " + guWinnings.ToString();
+		lblLosses->Text = "Losses: " + guLosses.ToString();
 	}
 	private: System::Void btnCalc_Click(System::Object^ sender, System::EventArgs^ e) {
 		try
