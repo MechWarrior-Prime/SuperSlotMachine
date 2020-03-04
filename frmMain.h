@@ -893,12 +893,14 @@ namespace SuperSlotMachine {
 	}
 	private: System::Void btnSpin_Click(System::Object^ sender, System::EventArgs^ e) {
 		SpinIt();
-		BlockRespin(false);
+		BlockRespin(false); //after any spin, re-spinning is allowed
+
 		/* KEEP for debugging
 		lbl21->ImageIndex = 12;
 		lbl22->ImageIndex = 12;
 		lbl23->ImageIndex = 12;
-*/
+		*/
+
 		CheckForWin();
 	}
 	private: System::Void btnRespin1_Click(System::Object^ sender, System::EventArgs^ e) {
