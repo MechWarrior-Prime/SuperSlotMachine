@@ -17,25 +17,25 @@ namespace SuperSlotMachine {
 	public ref class frmMain : public System::Windows::Forms::Form
 
 	{
-		Currency^ playing_money;
-	private: System::Windows::Forms::GroupBox^ gbStats;
-	private: System::Windows::Forms::Label^ lblSpins;
-	private: System::Windows::Forms::Label^ lblLost;
-	private: System::Windows::Forms::Label^ lblWins;
-		   unsigned guSpinCount = 0;
-		   unsigned guWins = 0;
-		   unsigned guLost = 0;
-		   unsigned guWinnings = 0; // currency
-	private: System::Windows::Forms::Label^ lblLosses;
-	private: System::Windows::Forms::Label^ lblWinnings;
-		   unsigned guLosses = 0; // currency
+	public:	Currency^ playing_money;
+		  bool gbFormLoading = true; //used to signal end of loading
+	private:
+		System::Windows::Forms::GroupBox^ gbStats;
+		System::Windows::Forms::Label^ lblSpins;
+		System::Windows::Forms::Label^ lblLost;
+		System::Windows::Forms::Label^ lblWins;
+		unsigned guSpinCount = 0;
+		unsigned guWins = 0;
+		unsigned guLost = 0;
+		unsigned guWinnings = 0; // currency
+		System::Windows::Forms::Label^ lblLosses;
+		System::Windows::Forms::Label^ lblWinnings;
+		unsigned guLosses = 0; // currency
 	public:
 		frmMain(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Konstruktorcode hier hinzufügen.
-			//
+
 			playing_money = gcnew Currency;
 			playing_money->changeAmount(10000);// initial currency
 		}
@@ -779,6 +779,8 @@ namespace SuperSlotMachine {
 		}
 	}
 	private:   void SpinIt() {
+		if (!gbFormLoading) guSpinCount += 1;//the init does not count as a play
+
 		if (playing_money->getAmount() - 25 <= 0) {
 			rtbOutput->Text = "GAME OVER";
 			MessageBox::Show("Sorry, you are broke. Try again another time!", "GAME OVER");
@@ -791,7 +793,7 @@ namespace SuperSlotMachine {
 			playing_money->changeAmount(-25); // ... charge the player
 			guLosses += 25;			// ...update stats
 		}
-		guSpinCount += 1;
+
 		Drum one;
 		Drum two;
 		Drum three;
@@ -822,14 +824,32 @@ namespace SuperSlotMachine {
 		lblDate->Text = tl->currentDECDate();
 		tl->InitRNG();	//set up the Random Number Generator
 		SpinIt();		// fill the slots, does not counts as a play
-		this->Text += " V" + "1.2";// Application::ProductVersion;
-		//this->Text += " V" + Application::ProductVersion;
+		this->Text += " V" + "1.2.1";
+		gbFormLoading = false;
 	}
 	private: Void CheckForWin() {
 		int winnings = 0;
 		bool jackpot = false;
 
-		if (lbl21->ImageIndex == lbl22->ImageIndex && (lbl21->ImageIndex == lbl23->ImageIndex)) {
+		if (lbl21->ImageIndex == 12 && lbl22->ImageIndex == 12 && lbl23->ImageIndex == 12) { //fruit basket
+			jackpot = true;
+			Microsoft::VisualBasic::Interaction::Beep();
+			winnings += 100000;
+			guWins += 1;
+			try
+			{
+				String^ dir = System::IO::Path::GetDirectoryName(Application::ExecutablePath);
+
+				rtbOutput->LoadFile(System::String::Concat(dir, "\\JACKPOT.rtf"));
+			}
+			catch (Exception ^ ex)
+			{
+				MessageBox::Show(ex->Message, "Jackpot.rtf");
+			}
+			MessageBox::Show("One-Two-Three! You win the JACKPOT!", "JACKPOT", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
+		}
+
+		if (lbl21->ImageIndex == lbl22->ImageIndex && (lbl21->ImageIndex == lbl23->ImageIndex) && !jackpot) {
 			winnings += 1000;
 			MessageBox::Show("You win in the middle row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
@@ -851,34 +871,16 @@ namespace SuperSlotMachine {
 			winnings += 1000;
 			MessageBox::Show("You win in the bottom row!", "Congratulations", MessageBoxButtons::OK, MessageBoxIcon::Information);
 		}
-		if (lbl21->ImageIndex == 12 && lbl22->ImageIndex == 12 && lbl23->ImageIndex == 12) { //fruit basket
-			winnings += 100000;
-			guWins += 1;
-			try
-			{
-				String^ dir = System::IO::Path::GetDirectoryName(Application::ExecutablePath);
-
-				rtbOutput->LoadFile(System::String::Concat(dir, "\\JACKPOT.rtf"));
-			}
-			catch (Exception ^ ex)
-			{
-				MessageBox::Show(ex->Message, "Jackpot.rtf");
-			}
-			MessageBox::Show("One-Two-Three! You win the JACKPOT!", "JACKPOT", MessageBoxButtons::OK, MessageBoxIcon::Exclamation);
-		}
 		playing_money->changeAmount(winnings);
 
 		if (!jackpot) {
-			//Transmute t;
 			if (winnings > 0) {
-				//rtbOutput->Rtf = t.PlainTextToRtf("WIN!");
 				rtbOutput->Text = "You win " + winnings.ToString() + " on spin " + guSpinCount.ToString();
 				BlockRespin(true); // after a win, leaving rows standing would increase chances
 				guWins += 1;
 			}
 			else
 			{
-				//rtbOutput->Rtf = t.PlainTextToRtf("no win");
 				rtbOutput->Text = "Spin " + guSpinCount.ToString() + ": no win";
 				guLost += 1;
 			};
@@ -915,7 +917,7 @@ namespace SuperSlotMachine {
 
 	private: void ReDraw() {
 		txtCurrency->Text = playing_money->getAmount().ToString();
-		lblSpins->Text = "Spins: " + (guSpinCount - 1).ToString(); // remove count created by programmatic click at load
+		lblSpins->Text = "Spins: " + guSpinCount.ToString(); // remove count created by programmatic click at load
 		lblWins->Text = "Wins: " + guWins.ToString();
 		lblLost->Text = "Lost: " + guLost.ToString();
 		lblWinnings->Text = "Winnings: " + guWinnings.ToString();

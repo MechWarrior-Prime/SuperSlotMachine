@@ -6,19 +6,20 @@
 /*
 	Super Slot Machine for CLR
 	Frank G. Dahncke
-	Build 0012
+	Build 0014
 	21-FEB-2020	1.0		creation
 	25-FEB-2020	1.1		images
 	26-FEB-2020	1.1.1	call CalculatorCLR
 	02-MAR-2020 1.2		statistics
+	05-MAR-2020	1.2.1	sound
 */
 
 using namespace System;
 using namespace System::Windows::Forms;
 using namespace System::Reflection;
 
-[assembly:AssemblyVersionAttribute("1.1.1.6")] ;
-[assembly:AssemblyFileVersionAttribute("1.1.1.6")] ;
+[assembly:AssemblyVersionAttribute("1.2.1.14")] ;
+[assembly:AssemblyFileVersionAttribute("1.2.1.14")] ;
 
 // no [STAThread], b/c it impairs applications with a GUI
 [STAThread] //needed for Clipboard actions
